@@ -1,5 +1,4 @@
-using Application.Account;
-using Application.Dtos;
+using Application.Dtos.Account;
 using FluentValidation;
 
 namespace Application.Validators;

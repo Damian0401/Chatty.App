@@ -1,17 +1,11 @@
 using Application.Account;
 using Application.Core;
-using Application.Interfaces;
 using Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Presistance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Extensions
 {

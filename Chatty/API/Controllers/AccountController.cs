@@ -1,8 +1,5 @@
 ﻿using Application.Account;
-using Application.Dtos;
-using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Application.Dtos.Account;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

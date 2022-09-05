@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Application.Core;
-using Application.Dtos;
+using Application.Dtos.Account;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Models;

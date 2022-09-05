@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Application.Core;
-using Application.Dtos;
+using Application.Dtos.Account;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Account;
 

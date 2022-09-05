@@ -1,6 +1,5 @@
 using System.Globalization;
 using API.Extensions;
-using Application.Core;
 
 var clutoreInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = clutoreInfo;
