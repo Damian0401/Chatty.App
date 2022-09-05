@@ -1,11 +1,12 @@
 using Application.Account;
+using Application.Dtos;
 using FluentValidation;
 
 namespace Application.Validators;
 
-public class RegisterCommandValidator : AbstractValidator<Register.Command>
+public class RegisterRequestDtoValidator : AbstractValidator<RegisterRequestDto>
 {
-    public RegisterCommandValidator()
+    public RegisterRequestDtoValidator()
     {
         RuleFor(c => c.Email)
             .NotEmpty()

@@ -1,4 +1,5 @@
 ﻿using Application.Account;
+using Application.Dtos;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,17 +17,17 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(Register.Command command)
+        public async Task<IActionResult> Register(RegisterRequestDto dto)
         {
-            var response = await Mediator.Send(command);
+            var response = await Mediator.Send(new Register.Command { Dto = dto});
 
             return SendResponse(response);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(Login.Command command)
+        public async Task<IActionResult> Login(LoginRequestDto dto)
         {
-            var response = await Mediator.Send(command);
+            var response = await Mediator.Send(new Login.Command { Dto = dto});
 
             return SendResponse(response);
         }

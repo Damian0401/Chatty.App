@@ -18,9 +18,7 @@ public class Register
 {
     public class Command : IRequest<Response<RegisterResponseDto>>
     {
-        public string Email { get; set; } = default!;
-        public string Password { get; set; } = default!;
-        public string UserName { get; set; } = default!;
+        public RegisterRequestDto Dto { get; set; } = default!;
     }
 
     public class Handler : IRequestHandler<Command, Response<RegisterResponseDto>>
@@ -41,17 +39,17 @@ public class Register
 
         public async Task<Response<RegisterResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
-            if (await _userManager.Users.AnyAsync(x => x.Email.Equals(request.Email)))
+            if (await _userManager.Users.AnyAsync(x => x.Email.Equals(request.Dto.Email)))
                 return new Response<RegisterResponseDto>(HttpStatusCode.BadRequest, new List<string> { "Email is already in use." });
 
-            if (await _userManager.Users.AnyAsync(x => x.UserName.Equals(request.UserName)))
+            if (await _userManager.Users.AnyAsync(x => x.UserName.Equals(request.Dto.UserName)))
                 return new Response<RegisterResponseDto>(HttpStatusCode.BadRequest, new List<string> { "UserName is already in use." });
 
             var user = _mapper
-                .Map<ApplicationUser>(request);
+                .Map<ApplicationUser>(request.Dto);
 
             var result = await _userManager
-                .CreateAsync(user, request.Password);
+                .CreateAsync(user, request.Dto.Password);
 
             if (!result.Succeeded)
             {

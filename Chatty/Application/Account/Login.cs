@@ -18,8 +18,7 @@ public class Login
 {
     public class Command : IRequest<Response<LoginResponseDto>>
     {
-        public string Email { get; set; } = default!;
-        public string Password { get; set; } = default!;
+        public LoginRequestDto Dto { get; set; } = default!;
     }
 
     public class Handler : IRequestHandler<Command, Response<LoginResponseDto>>
@@ -41,13 +40,13 @@ public class Login
         public async Task<Response<LoginResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             var user = await _userManager
-                .FindByEmailAsync(request.Email);
+                .FindByEmailAsync(request.Dto.Email);
 
             if (user is null)
                 return new Response<LoginResponseDto>(HttpStatusCode.Unauthorized);
 
             var result = await _signInManager
-                .CheckPasswordSignInAsync(user, request.Password, false);
+                .CheckPasswordSignInAsync(user, request.Dto.Password, false);
 
             if (!result.Succeeded)
                 return new Response<LoginResponseDto>(HttpStatusCode.Unauthorized);

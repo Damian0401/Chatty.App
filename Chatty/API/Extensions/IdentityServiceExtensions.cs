@@ -38,6 +38,9 @@ namespace API.Extensions
 
             services.Configure<AuthenticationSettings>(configuration.GetSection("AuthenticationSettings"));
 
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
+
             return services;
         }
     }

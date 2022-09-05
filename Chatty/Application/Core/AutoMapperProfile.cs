@@ -20,7 +20,7 @@ namespace Application.Core
         {
             CreateMap<ApplicationUser, LoginResponseDto>();
             CreateMap<ApplicationUser, RegisterResponseDto>();
-            CreateMap<Register.Command, ApplicationUser>();
+            CreateMap<RegisterRequestDto, ApplicationUser>();
         }
     }
 }

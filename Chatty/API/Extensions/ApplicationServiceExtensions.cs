@@ -21,10 +21,7 @@ namespace API.Extensions
             IConfiguration configuration)
         {
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(config =>
-            {
-                config.CustomSchemaIds(x => x.FullName);
-            });
+            services.AddSwaggerGen();
 
             services.AddDbContext<DataContext>(opt =>
             {
@@ -34,10 +31,7 @@ namespace API.Extensions
             services.AddMediatR(typeof(Login).Assembly);
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
-
-            services.AddScoped<IUserAccessor, UserAccessor>();
-            services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddValidatorsFromAssemblyContaining<LoginRequestDtoValidator>();
 
             return services;
         }
