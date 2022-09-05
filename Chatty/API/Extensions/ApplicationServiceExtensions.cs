@@ -22,10 +22,20 @@ namespace API.Extensions
                 opt.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddCors(opt => 
+            {
+                opt.AddPolicy("CorsPolicy", builder =>
+                    builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins("http://localhost:3000"));
+            });
+
             services.AddMediatR(typeof(Login).Assembly);
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<LoginRequestDtoValidator>();
+            services.AddSignalR();
 
             return services;
         }

@@ -1,5 +1,7 @@
 using System.Globalization;
 using API.Extensions;
+using API.Hubs;
+using Application.Middleware;
 
 var clutoreInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = clutoreInfo;
@@ -22,11 +24,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<WebSocketsMiddleware>();
+
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat");
 
 app.Run();

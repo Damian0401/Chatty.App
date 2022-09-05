@@ -1,5 +1,6 @@
 using System.Text;
 using Application.Interfaces;
+using Application.Middleware;
 using Domain.Models;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -31,11 +32,14 @@ namespace API.Extensions
                         ValidateAudience = false
                     };
                 });
+            services.AddAuthorization();
+
 
             services.Configure<AuthenticationSettings>(configuration.GetSection("AuthenticationSettings"));
 
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<WebSocketsMiddleware>();
 
             return services;
         }
