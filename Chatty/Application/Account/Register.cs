@@ -12,12 +12,12 @@ namespace Application.Account;
 
 public class Register
 {
-    public class Command : IRequest<Response<RegisterResponseDto>>
+    public class Command : IRequest<ResponseForController<RegisterResponseDto>>
     {
         public RegisterRequestDto Dto { get; set; } = default!;
     }
 
-    public class Handler : IRequestHandler<Command, Response<RegisterResponseDto>>
+    public class Handler : IRequestHandler<Command, ResponseForController<RegisterResponseDto>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -33,13 +33,13 @@ public class Register
             _userManager = userManager;
         }
 
-        public async Task<Response<RegisterResponseDto>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<ResponseForController<RegisterResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             if (await _userManager.Users.AnyAsync(x => x.Email.Equals(request.Dto.Email)))
-                return new Response<RegisterResponseDto>(HttpStatusCode.BadRequest, new List<string> { "Email is already in use." });
+                return new ResponseForController<RegisterResponseDto>(HttpStatusCode.BadRequest, new List<string> { "Email is already in use." });
 
             if (await _userManager.Users.AnyAsync(x => x.UserName.Equals(request.Dto.UserName)))
-                return new Response<RegisterResponseDto>(HttpStatusCode.BadRequest, new List<string> { "UserName is already in use." });
+                return new ResponseForController<RegisterResponseDto>(HttpStatusCode.BadRequest, new List<string> { "UserName is already in use." });
 
             var user = _mapper
                 .Map<ApplicationUser>(request.Dto);
@@ -53,14 +53,14 @@ public class Register
                     .Errors
                     .Select(x => x.Description)
                     .ToList();
-                return new Response<RegisterResponseDto>(HttpStatusCode.BadRequest, errors);
+                return new ResponseForController<RegisterResponseDto>(HttpStatusCode.BadRequest, errors);
             }
 
             var responseDto = _mapper.Map<RegisterResponseDto>(user);
 
             responseDto.Token = _jwtGenerator.CreateToken(user);
 
-            return new Response<RegisterResponseDto>(HttpStatusCode.OK, responseDto);  
+            return new ResponseForController<RegisterResponseDto>(HttpStatusCode.OK, responseDto);  
         }
     }
 }

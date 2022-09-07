@@ -1,5 +1,6 @@
 ﻿using Application.Account;
 using Application.Dtos.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -13,6 +14,7 @@ namespace API.Controllers
         {
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequestDto dto)
         {
@@ -21,12 +23,20 @@ namespace API.Controllers
             return SendResponse(response);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequestDto dto)
         {
             var response = await Mediator.Send(new Login.Command { Dto = dto});
 
             return SendResponse(response);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Test()
+        {
+            return Ok("It is working!");
         }
     }
 }

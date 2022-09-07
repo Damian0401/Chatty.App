@@ -1,41 +1,41 @@
 using System.Net;
 
 namespace Application.Core;
-public class Response
+public class ResponseForController
 {
     public HttpStatusCode StatusCode { get; set; }
     public List<string>? Errors { get; set; }
 
-    public Response(HttpStatusCode statusCode)
+    public ResponseForController(HttpStatusCode statusCode)
     {
         StatusCode = statusCode;
     }
 
-    public Response(HttpStatusCode statusCode, List<string> errors)
+    public ResponseForController(HttpStatusCode statusCode, List<string> errors)
     {
         StatusCode = statusCode;
         Errors = errors;
     }
 }
 
-public class Response<T>
+public class ResponseForController<T>
 {
     public HttpStatusCode StatusCode { get; set; }
     public List<string>? Errors { get; set; }
     public T? ResponseContent { get; set; }
 
-    public Response(HttpStatusCode statusCode)
+    public ResponseForController(HttpStatusCode statusCode)
     {
         StatusCode = statusCode;
     }
 
-    public Response(HttpStatusCode statusCode, List<string> errors)
+    public ResponseForController(HttpStatusCode statusCode, List<string> errors)
     {
         StatusCode = statusCode;
         Errors = errors;
     }
 
-    public Response(HttpStatusCode statusCode, T responseContent)
+    public ResponseForController(HttpStatusCode statusCode, T responseContent)
     {
         StatusCode = statusCode;
         ResponseContent = responseContent;

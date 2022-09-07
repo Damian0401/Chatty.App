@@ -6,7 +6,7 @@ namespace Domain.Models
         public string Body { get; set; } = default!;
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string AuthorId { get; set; } = default!;
+        public string? AuthorId { get; set; }
         public Guid RoomId { get; set; }
         
         public virtual ApplicationUser Author { get; set; } = default!;

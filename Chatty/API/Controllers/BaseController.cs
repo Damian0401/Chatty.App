@@ -16,11 +16,11 @@ public class BaseController : ControllerBase
         Mediator = serviceProvider.GetService<IMediator>()!;
     }
 
-    protected IActionResult SendResponse(Response response)
+    protected IActionResult SendResponse(ResponseForController response)
     {
         return response.StatusCode switch
         {
-            HttpStatusCode.OK => Ok(),
+            HttpStatusCode.OK => NoContent(),
             HttpStatusCode.Unauthorized => Unauthorized(),
             HttpStatusCode.Forbidden => Forbid(),
             HttpStatusCode.NotFound => NotFound(),
@@ -28,7 +28,7 @@ public class BaseController : ControllerBase
         };
     }
 
-    protected IActionResult SendResponse<T>(Response<T> response)
+    protected IActionResult SendResponse<T>(ResponseForController<T> response)
     {
         return response.StatusCode switch
         {

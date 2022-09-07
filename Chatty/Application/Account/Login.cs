@@ -11,12 +11,12 @@ namespace Application.Account;
 
 public class Login
 {
-    public class Command : IRequest<Response<LoginResponseDto>>
+    public class Command : IRequest<ResponseForController<LoginResponseDto>>
     {
         public LoginRequestDto Dto { get; set; } = default!;
     }
 
-    public class Handler : IRequestHandler<Command, Response<LoginResponseDto>>
+    public class Handler : IRequestHandler<Command, ResponseForController<LoginResponseDto>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -32,25 +32,25 @@ public class Login
             _userManager = userManager;
         }
 
-        public async Task<Response<LoginResponseDto>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<ResponseForController<LoginResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             var user = await _userManager
                 .FindByEmailAsync(request.Dto.Email);
 
             if (user is null)
-                return new Response<LoginResponseDto>(HttpStatusCode.Unauthorized);
+                return new ResponseForController<LoginResponseDto>(HttpStatusCode.Unauthorized);
 
             var result = await _signInManager
                 .CheckPasswordSignInAsync(user, request.Dto.Password, false);
 
             if (!result.Succeeded)
-                return new Response<LoginResponseDto>(HttpStatusCode.Unauthorized);
+                return new ResponseForController<LoginResponseDto>(HttpStatusCode.Unauthorized);
 
             var responseDto = _mapper.Map<LoginResponseDto>(user);
 
             responseDto.Token = _jwtGenerator.CreateToken(user);
 
-            return new Response<LoginResponseDto>(HttpStatusCode.OK, responseDto);
+            return new ResponseForController<LoginResponseDto>(HttpStatusCode.OK, responseDto);
         }
     }
 }
