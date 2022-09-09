@@ -9,7 +9,7 @@ namespace Application.Core;
 public class ResponseForHub<T>
 {
     public bool IsSuccess { get; set; }
-    public T? ResponseContent { get; set; }
+    public T ResponseContent { get; set; } = default!;
 
     public List<string>? Errors { get; set; }
 

@@ -50,7 +50,7 @@ namespace Application.Rooms
 
                 var room = await _context.Rooms
                     .Include(x => x.Messages)
-                    .FirstOrDefaultAsync(x => x.Id.Equals(request.Dto.Id));
+                    .FirstOrDefaultAsync(x => x.Id.Equals(request.Dto.RoomId));
 
                 if (room is null)
                     return ResponseForHub<JoinRoomResponseDto>
@@ -75,7 +75,6 @@ namespace Application.Rooms
                 var message = new Message
                 {
                     Body = $"Welcome to the room: {user.UserName}",
-                    IsDeleted = false,
                     CreatedAt = DateTime.Now
                 };
                 room.Messages.Add(message);
@@ -91,8 +90,11 @@ namespace Application.Rooms
                     .ProjectTo<ApplicationUserDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
-                var callerResponse = _mapper.Map<JoinRoomResponseForCallerDto>(room);
-                callerResponse.Users = users;
+                var callerResponse = new JoinRoomResponseForCallerDto
+                {
+                    Room = _mapper.Map<RoomDto>(room)
+                };
+                callerResponse.Room.Users = users;
 
                 var clientsResponse = new JoinRoomResponseForClientsDto
                 {

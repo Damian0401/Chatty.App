@@ -7,5 +7,5 @@ namespace Application.Dtos.Room;
 
 public class CreateRoomRequestDto
 {
-    public string Name { get; set; } = default!;
+    public string RoomName { get; set; } = default!;
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Account;
 using Application.Dtos.Account;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +10,18 @@ namespace API.Controllers
     [ApiController]
     public class AccountController : BaseController
     {
-        public AccountController(IServiceProvider serviceProvider) 
-            : base(serviceProvider)
+        private readonly IMediator _mediator;
+
+        public AccountController(IMediator  mediator) 
         {
+            _mediator = mediator;
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequestDto dto)
         {
-            var response = await Mediator.Send(new Register.Command { Dto = dto});
+            var response = await _mediator.Send(new Register.Command { Dto = dto});
 
             return SendResponse(response);
         }
@@ -27,16 +30,9 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequestDto dto)
         {
-            var response = await Mediator.Send(new Login.Command { Dto = dto});
+            var response = await _mediator.Send(new Login.Command { Dto = dto});
 
             return SendResponse(response);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public IActionResult Test()
-        {
-            return Ok("It is working!");
         }
     }
 }

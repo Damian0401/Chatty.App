@@ -21,8 +21,5 @@ public class JoinRoomResponseForClientsDto
 
 public class JoinRoomResponseForCallerDto
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = default!;
-    public List<MessageDto> Messages { get; set; } = default!;
-    public List<ApplicationUserDto> Users { get; set; } = default!;
+    public RoomDto Room { get; set; } = default!;
 }

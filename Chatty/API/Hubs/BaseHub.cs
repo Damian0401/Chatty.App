@@ -5,8 +5,9 @@ namespace API.Hubs;
 
 public class BaseHub : Hub
 {
-    protected async Task HandleErrors<T>(ResponseForHub<T> response)
+    protected async Task HandleErrors(List<string>? errors)
     {
-        await Clients.Caller.SendAsync("HandleErrors", new { Errors = response.Errors });
+        if (errors is not null)
+            await Clients.Caller.SendAsync("HandleErrors", new { Errors = errors });
     }
 }

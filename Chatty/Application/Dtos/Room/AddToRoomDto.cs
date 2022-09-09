@@ -7,7 +7,8 @@ using Application.Dtos.Message;
 
 namespace Application.Dtos.Room;
 
-public class CreateRoomResponseDto
+public class AddToRoomDto
 {
-    public RoomDto Room { get; set; } = default!;
+    public ApplicationUserDto User { get; set; } = default!;
+    public MessageDto Message { get; set; } = default!;
 }

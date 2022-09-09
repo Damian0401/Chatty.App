@@ -21,22 +21,22 @@ namespace Application.Core
             CreateMap<ApplicationUser, RegisterResponseDto>();
             CreateMap<RegisterRequestDto, ApplicationUser>();
             CreateMap<RoomApplicationUser, ApplicationUserDto>()
-                .ForMember(x => x.Id, a => 
+                .ForMember(x => x.Id, a =>
                     a.MapFrom(s => s.UserId));
         }
 
         private void MapsForMessage()
         {
             CreateMap<Message, MessageDto>()
-                .ForMember(x => x.Body, a => 
+                .ForMember(x => x.Body, a =>
                     a.MapFrom(s => s.IsDeleted ? "This message has been deleted" : s.Body))
                 .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
+            CreateMap<SendMessageRequestDto, Message>();
         }
 
         private void MapsForRoom()
         {
-            CreateMap<Room, CreateRoomResponseDto>();
-            CreateMap<Room, JoinRoomResponseForCallerDto>();
+            CreateMap<Room, RoomDto>();
         }
     }
 }

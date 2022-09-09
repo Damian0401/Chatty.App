@@ -49,13 +49,12 @@ public class CreateRoom
             var message = new Message
             {
                 Body = $"Welcome to the room: {user.UserName}",
-                IsDeleted = false,
                 CreatedAt = DateTime.Now
             };
 
             var room = new Room
             {
-                Name = request.Dto.Name,
+                Name = request.Dto.RoomName,
                 Messages = new List<Message>{ message }
             };
 
@@ -77,8 +76,12 @@ public class CreateRoom
                 return ResponseForHub<CreateRoomResponseDto>
                     .Failure(new List<string> { "Unable to create new room" });
 
-            var responseDto = _mapper.Map<CreateRoomResponseDto>(room);
-            responseDto.Users = new List<ApplicationUserDto> 
+            var responseDto = new CreateRoomResponseDto
+            {
+                Room = _mapper.Map<RoomDto>(room)
+            };
+            
+            responseDto.Room.Users = new List<ApplicationUserDto>
             { 
                 _mapper.Map<ApplicationUserDto>(roomApplicationUser) 
             };

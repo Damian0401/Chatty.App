@@ -7,7 +7,7 @@ using Application.Dtos.Message;
 
 namespace Application.Dtos.Room;
 
-public class CreateRoomResponseDto
+public class GetRoomDetailsResponseDto
 {
     public RoomDto Room { get; set; } = default!;
 }

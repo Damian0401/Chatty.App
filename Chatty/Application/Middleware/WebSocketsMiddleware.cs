@@ -13,7 +13,7 @@ public class WebSocketsMiddleware : IMiddleware
     {
         var request = context.Request;
 
-        if (request.Path.StartsWithSegments("/chat", StringComparison.OrdinalIgnoreCase) &&
+        if (request.Path.StartsWithSegments("/hubs/chat", StringComparison.OrdinalIgnoreCase) &&
             request.Query.TryGetValue("access_token", out var accessToken))
         {
             request.Headers.Add("Authorization", $"Bearer {accessToken}");

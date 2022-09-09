@@ -9,13 +9,6 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class BaseController : ControllerBase
 {
-    protected IMediator Mediator { get; }
-
-    public BaseController(IServiceProvider serviceProvider)
-    {
-        Mediator = serviceProvider.GetService<IMediator>()!;
-    }
-
     protected IActionResult SendResponse(ResponseForController response)
     {
         return response.StatusCode switch
