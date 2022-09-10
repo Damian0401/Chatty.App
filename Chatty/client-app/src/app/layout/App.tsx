@@ -1,8 +1,13 @@
-import './styles.css';
+import HomePage from "../../features/home/HomePage";
+import ToggleThemeButton from "./ToggleThemeButton";
 
 function App() {
+
   return (
-    <h1>Hello world!</h1>
+    <>
+      <ToggleThemeButton />
+      <HomePage />
+    </>
   );
 }
 
