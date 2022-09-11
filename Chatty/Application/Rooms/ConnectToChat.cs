@@ -46,7 +46,7 @@ public class ConnectToChat
 
             var responseDto = new ConnectToChatResponseDto
             {
-                Rooms = _mapper.Map<List<RoomDto>>(rooms)
+                Rooms = _mapper.Map<List<RoomForConnectToChatResponseDto>>(rooms)
             };
 
             return ResponseForHub<ConnectToChatResponseDto>

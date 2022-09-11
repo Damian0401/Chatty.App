@@ -15,12 +15,12 @@ namespace Application.Messages
 {
     public class SendMessage
     {
-        public class Command : IRequest<ResponseForHub<MessageDto>>
+        public class Command : IRequest<ResponseForHub<SendMessageResponseDto>>
         {
             public SendMessageRequestDto Dto { get; set; } = default!;
         }
 
-        public class Handler : IRequestHandler<Command, ResponseForHub<MessageDto>>
+        public class Handler : IRequestHandler<Command, ResponseForHub<SendMessageResponseDto>>
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _userAccessor;
@@ -33,7 +33,7 @@ namespace Application.Messages
                 _userAccessor = userAccessor;
             }
 
-            public async Task<ResponseForHub<MessageDto>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<ResponseForHub<SendMessageResponseDto>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var userName = _userAccessor
                     .GetCurrentlyLoggedUserName();
@@ -42,7 +42,7 @@ namespace Application.Messages
                     .FirstOrDefaultAsync(x => x.UserName.Equals(userName));
 
                 if (user is null)
-                    return ResponseForHub<MessageDto>
+                    return ResponseForHub<SendMessageResponseDto>
                         .Failure(new List<string> { "Access denied" });
 
                 var room = await _context.Rooms
@@ -51,11 +51,11 @@ namespace Application.Messages
                     .FirstOrDefaultAsync(x => x.Id.Equals(request.Dto.RoomId));
 
                 if (room is null)
-                    return ResponseForHub<MessageDto>
+                    return ResponseForHub<SendMessageResponseDto>
                         .Failure(new List<string> { "Room not found" });
 
                 if (!room.Users.Where(u => u.UserId.Equals(user.Id)).Any())
-                    return ResponseForHub<MessageDto>
+                    return ResponseForHub<SendMessageResponseDto>
                         .Failure(new List<string> { "You cannot to this room" });
 
                 var message = _mapper.Map<Message>(request.Dto);
@@ -68,12 +68,12 @@ namespace Application.Messages
                 var result = await _context.SaveChangesAsync();
 
                 if (result == 0)
-                    return ResponseForHub<MessageDto>
+                    return ResponseForHub<SendMessageResponseDto>
                         .Failure(new List<string> { "Unable to send message" });
 
-                var responseDto = _mapper.Map<MessageDto>(message);
+                var responseDto = _mapper.Map<SendMessageResponseDto>(message);
 
-                return ResponseForHub<MessageDto>
+                return ResponseForHub<SendMessageResponseDto>
                     .Success(responseDto);
             }
         }

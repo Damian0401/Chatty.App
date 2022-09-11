@@ -87,16 +87,16 @@ namespace Application.Rooms
 
                 var users = await _context.RoomApplicationUsers
                     .Where(x => x.RoomId.Equals(room.Id))
-                    .ProjectTo<ApplicationUserDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<UserForJoinRoomResponseDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
-                var callerResponse = _mapper.Map<RoomDto>(room);
+                var callerResponse = _mapper.Map<CallerResponseForJoinRoomResponseDto>(room);
                 callerResponse.Users = users;
 
-                var clientsResponse = new AddToRoomDto
+                var clientsResponse = new ClientsResponseForJoinRoomResponseDto
                 {
-                    User = _mapper.Map<ApplicationUserDto>(roomApplicationUser),
-                    Message = _mapper.Map<MessageDto>(message)
+                    User = _mapper.Map<UserForJoinRoomResponseDto>(roomApplicationUser),
+                    Message = _mapper.Map<MessageForJoinRoomResponseDto>(message)
                 };
 
                 var responseDto = new JoinRoomResponseDto

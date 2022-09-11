@@ -17,12 +17,12 @@ using Presistance;
 namespace Application.Rooms;
 public class CreateRoom
 {
-    public class Command : IRequest<ResponseForHub<RoomDto>>
+    public class Command : IRequest<ResponseForHub<CreateRoomResponseDto>>
     {
         public string RoomName { get; set; } = default!;
     }
 
-    public class Handler : IRequestHandler<Command, ResponseForHub<RoomDto>>
+    public class Handler : IRequestHandler<Command, ResponseForHub<CreateRoomResponseDto>>
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
@@ -34,7 +34,7 @@ public class CreateRoom
             _context = context;
         }
 
-        public async Task<ResponseForHub<RoomDto>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<ResponseForHub<CreateRoomResponseDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             var userName = _userAccessor
                 .GetCurrentlyLoggedUserName();
@@ -43,7 +43,7 @@ public class CreateRoom
                 .FirstOrDefaultAsync(x => x.UserName.Equals(userName));
 
             if (user is null)
-                return ResponseForHub<RoomDto>
+                return ResponseForHub<CreateRoomResponseDto>
                     .Failure(new List<string> { "Access denied" });
 
             var message = new Message
@@ -73,17 +73,17 @@ public class CreateRoom
             var result = await _context.SaveChangesAsync();
 
             if (result == 0)
-                return ResponseForHub<RoomDto>
+                return ResponseForHub<CreateRoomResponseDto>
                     .Failure(new List<string> { "Unable to create new room" });
 
-            var responseDto = _mapper.Map<RoomDto>(room);
+            var responseDto = _mapper.Map<CreateRoomResponseDto>(room);
             
-            responseDto.Users = new List<ApplicationUserDto>
+            responseDto.Users = new List<UserForCreateRoomResponseDto>
             { 
-                _mapper.Map<ApplicationUserDto>(roomApplicationUser) 
+                _mapper.Map<UserForCreateRoomResponseDto>(roomApplicationUser) 
             };
 
-            return ResponseForHub<RoomDto>
+            return ResponseForHub<CreateRoomResponseDto>
                 .Success(responseDto);
         }
     }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Application.Dtos.Message;
 
-public class MessageDto
+public class SendMessageResponseDto
 {
     public Guid Id { get; set; }
     public string Body { get; set; } = default!;
