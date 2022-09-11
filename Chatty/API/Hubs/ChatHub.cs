@@ -36,12 +36,12 @@ public class ChatHub : BaseHub
         }
 
         await Clients.Caller
-            .SendAsync("ConnectToChat", response.ResponseContent);
+            .SendAsync("ConnectToChat", response.ResponseContent.Rooms);
     }
 
-    public async Task CreateRoom(CreateRoomRequestDto dto)
+    public async Task CreateRoom(string roomName)
     {
-        var response = await _mediator.Send(new CreateRoom.Command { Dto = dto });
+        var response = await _mediator.Send(new CreateRoom.Command { RoomName = roomName });
 
         if (!response.IsSuccess)
         {
@@ -50,15 +50,15 @@ public class ChatHub : BaseHub
         }
 
         await Groups.AddToGroupAsync(Context.ConnectionId,
-            response.ResponseContent.Room.Id.ToString());
+            response.ResponseContent.Id.ToString());
 
         await Clients.Caller
             .SendAsync("AddRoom", response.ResponseContent);
     }
 
-    public async Task JoinRoom(JoinRoomRequestDto dto)
+    public async Task JoinRoom(Guid roomId)
     {
-        var response = await _mediator.Send(new JoinRoom.Command { Dto = dto });
+        var response = await _mediator.Send(new JoinRoom.Command { RoomId = roomId });
 
         if (!response.IsSuccess)
         {
@@ -66,11 +66,11 @@ public class ChatHub : BaseHub
             return;
         }
 
-        await Clients.Group(response.ResponseContent.CallerResponse.Room.Id.ToString())
+        await Clients.Group(response.ResponseContent.CallerResponse.Id.ToString())
             .SendAsync("AddUser", response.ResponseContent.ClientsResponse);
 
         await Groups.AddToGroupAsync(Context.ConnectionId,
-            response.ResponseContent.CallerResponse.Room.Id.ToString());
+            response.ResponseContent.CallerResponse.Id.ToString());
 
         await Clients.Caller
             .SendAsync("AddRoom", response.ResponseContent.CallerResponse);
@@ -90,9 +90,9 @@ public class ChatHub : BaseHub
             .SendAsync("RecieveMessage", response.ResponseContent);
     }
 
-    public async Task DeleteMessage(DeleteMessageRequestDto dto)
+    public async Task DeleteMessage(Guid messageId)
     {
-        var response = await _mediator.Send(new DeleteMessage.Command { Dto = dto });
+        var response = await _mediator.Send(new DeleteMessage.Command { MessageId = messageId });
 
         if (!response.IsSuccess)
         {
@@ -100,13 +100,13 @@ public class ChatHub : BaseHub
             return;
         }
 
-        await Clients.Group(response.ResponseContent.Message.RoomId.ToString())
+        await Clients.Group(response.ResponseContent.RoomId.ToString())
             .SendAsync("RecieveMessage", response.ResponseContent);
     }
 
-    public async Task RoomDetails(GetRoomDetailsRequestDto dto)
+    public async Task RoomDetails(Guid roomId)
     {
-        var response = await _mediator.Send(new GetRoomDetails.Query{ Dto = dto });
+        var response = await _mediator.Send(new GetRoomDetails.Query{ RoomId = roomId});
 
         if (!response.IsSuccess)
         {

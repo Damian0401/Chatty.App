@@ -34,5 +34,14 @@ namespace API.Controllers
 
             return SendResponse(response);
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Current()
+        {
+            var response = await _mediator.Send(new Current.Query());
+
+            return SendResponse(response);
+        }
     }
 }

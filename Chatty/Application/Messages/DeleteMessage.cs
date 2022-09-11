@@ -14,12 +14,12 @@ namespace Application.Messages;
 
 public class DeleteMessage
 {
-    public class Command : IRequest<ResponseForHub<DeleteMessageResponseDto>>
+    public class Command : IRequest<ResponseForHub<MessageDto>>
     {
-        public DeleteMessageRequestDto Dto { get; set; } = default!;
+        public Guid MessageId { get; set; }
     }
 
-    public class Handler : IRequestHandler<Command, ResponseForHub<DeleteMessageResponseDto>>
+    public class Handler : IRequestHandler<Command, ResponseForHub<MessageDto>>
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
@@ -31,7 +31,7 @@ public class DeleteMessage
             _context = context;
         }
 
-        public async Task<ResponseForHub<DeleteMessageResponseDto>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<ResponseForHub<MessageDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             var userName = _userAccessor
                 .GetCurrentlyLoggedUserName();
@@ -40,14 +40,14 @@ public class DeleteMessage
                 .FirstOrDefaultAsync(x => x.UserName.Equals(userName));
 
             if (user is null)
-                return ResponseForHub<DeleteMessageResponseDto>
+                return ResponseForHub<MessageDto>
                     .Failure(new List<string> { "Access denied" });
 
             var message = await _context.Messages
-                .FindAsync(request.Dto.MessageId);
+                .FindAsync(request.MessageId);
 
             if (message is null)
-                return ResponseForHub<DeleteMessageResponseDto>
+                return ResponseForHub<MessageDto>
                     .Failure(new List<string> { "Message not found" });
 
             var roomApplicationUser = await _context.RoomApplicationUsers
@@ -55,12 +55,12 @@ public class DeleteMessage
                     && x.RoomId.Equals(message.RoomId));
 
             if (roomApplicationUser is null)
-                return ResponseForHub<DeleteMessageResponseDto>
+                return ResponseForHub<MessageDto>
                     .Failure(new List<string> { "You do not have access to this room" });
 
 
             if (!roomApplicationUser.IsAdministrator && !user.Id.Equals(message.AuthorId))
-                return ResponseForHub<DeleteMessageResponseDto>
+                return ResponseForHub<MessageDto>
                     .Failure(new List<string> { "You are not allowed to delete this message" });
 
             message.IsDeleted = true;
@@ -68,15 +68,12 @@ public class DeleteMessage
             var result = await _context.SaveChangesAsync();
 
             if (result == 0)
-                return ResponseForHub<DeleteMessageResponseDto>
+                return ResponseForHub<MessageDto>
                     .Failure(new List<string> { "Unable to delete message" });
 
-            var responseDto = new DeleteMessageResponseDto
-            {
-                Message = _mapper.Map<MessageDto>(message)
-            };
+            var responseDto = _mapper.Map<MessageDto>(message);
 
-            return ResponseForHub<DeleteMessageResponseDto>
+            return ResponseForHub<MessageDto>
                 .Success(responseDto);
         }
     }

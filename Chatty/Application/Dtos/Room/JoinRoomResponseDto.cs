@@ -9,17 +9,6 @@ namespace Application.Dtos.Room;
 
 public class JoinRoomResponseDto
 {
-    public JoinRoomResponseForCallerDto CallerResponse { get; set; } = default!;
-    public JoinRoomResponseForClientsDto ClientsResponse { get; set; } = default!;
-}
-
-public class JoinRoomResponseForClientsDto
-{
-    public ApplicationUserDto User { get; set; } = default!;
-    public MessageDto Message { get; set; } = default!;
-}
-
-public class JoinRoomResponseForCallerDto
-{
-    public RoomDto Room { get; set; } = default!;
+    public RoomDto CallerResponse { get; set; } = default!;
+    public AddToRoomDto ClientsResponse { get; set; } = default!;
 }

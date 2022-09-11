@@ -20,6 +20,7 @@ namespace Application.Core
             CreateMap<ApplicationUser, LoginResponseDto>();
             CreateMap<ApplicationUser, RegisterResponseDto>();
             CreateMap<RegisterRequestDto, ApplicationUser>();
+            CreateMap<ApplicationUser, CurrentResponseDto>();
             CreateMap<RoomApplicationUser, ApplicationUserDto>()
                 .ForMember(x => x.Id, a =>
                     a.MapFrom(s => s.UserId));

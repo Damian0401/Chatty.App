@@ -21,7 +21,7 @@ namespace Application.Rooms
     {
         public class Command : IRequest<ResponseForHub<JoinRoomResponseDto>>
         {
-            public JoinRoomRequestDto Dto { get; set; } = default!;
+            public Guid RoomId { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, ResponseForHub<JoinRoomResponseDto>>
@@ -50,7 +50,7 @@ namespace Application.Rooms
 
                 var room = await _context.Rooms
                     .Include(x => x.Messages)
-                    .FirstOrDefaultAsync(x => x.Id.Equals(request.Dto.RoomId));
+                    .FirstOrDefaultAsync(x => x.Id.Equals(request.RoomId));
 
                 if (room is null)
                     return ResponseForHub<JoinRoomResponseDto>
@@ -90,13 +90,10 @@ namespace Application.Rooms
                     .ProjectTo<ApplicationUserDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
-                var callerResponse = new JoinRoomResponseForCallerDto
-                {
-                    Room = _mapper.Map<RoomDto>(room)
-                };
-                callerResponse.Room.Users = users;
+                var callerResponse = _mapper.Map<RoomDto>(room);
+                callerResponse.Users = users;
 
-                var clientsResponse = new JoinRoomResponseForClientsDto
+                var clientsResponse = new AddToRoomDto
                 {
                     User = _mapper.Map<ApplicationUserDto>(roomApplicationUser),
                     Message = _mapper.Map<MessageDto>(message)
