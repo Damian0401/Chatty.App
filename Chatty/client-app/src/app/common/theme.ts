@@ -16,7 +16,7 @@ const theme = extendTheme({
     components: {
         Button: {
             variants: {
-                'main-page': {
+                'main-style': {
                     bgColor: 'whiteAlpha.300',
                     boxShadow: '8px 3px 12px -2px rgba(66, 68, 90, 1)',
                     _hover: {
