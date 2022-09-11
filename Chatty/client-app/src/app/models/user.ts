@@ -1,5 +1,5 @@
 
-export interface UserDto {
+export interface User {
     id: string;
     displayName: string;
     isAdministrator: boolean;

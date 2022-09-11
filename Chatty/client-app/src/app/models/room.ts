@@ -1,9 +1,9 @@
-import { MessageDto } from "./message";
-import { UserDto } from "./user";
+import { Message } from "./message";
+import { User } from "./user";
 
-export interface RoomDto {
+export interface Room {
     id: string;
     name: string;
-    messages: MessageDto[] | null;
-    users: UserDto[] | null;
+    messages: Message[] | null;
+    users: User[] | null;
 }

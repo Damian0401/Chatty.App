@@ -1,5 +1,5 @@
 
-export interface MessageDto {
+export interface Message {
     id: string;
     body: string;
     isDeleted: boolean;
