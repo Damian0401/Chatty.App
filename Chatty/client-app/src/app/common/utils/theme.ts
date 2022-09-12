@@ -24,6 +24,24 @@ const theme = extendTheme({
                     }
                 }
             }
+        },
+        Container: {
+            variants: {
+                'main-style': {
+                    bgColor: 'whiteAlpha.300',
+                    borderRadius: '1rem',
+                    padding: '4'
+                }
+            }
+        },
+        Link: {
+            variants: {
+                'main-style': (props: StyleFunctionProps) => ({
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: props.colorMode === 'light' ? 'blue.900' : 'blue.500',
+                })
+            }
         }
     }
 });

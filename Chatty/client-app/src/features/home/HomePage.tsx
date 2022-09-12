@@ -1,8 +1,9 @@
 import { Button, Center } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 
 
-export default function HomePage() {
+export default observer(function HomePage() {
 
     return (
         <Center height='100vh'>
@@ -24,4 +25,4 @@ export default function HomePage() {
             </Button>
         </Center>
     )
-}
+})
