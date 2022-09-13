@@ -7,9 +7,13 @@ const darkBackground = 'linear-gradient(90deg, rgba(20,16,61,1) 0%, rgba(37,22,1
 const theme = extendTheme({
     styles: {
         global: (props: StyleFunctionProps) => ({
+            html: {
+                height: '100%',
+            },
             body: {
                 bg: mode(lightBackground, darkBackground)(props),
-                fontFamily: 'Sans-Serif'
+                margin: 0,
+                padding: 0,
             },
         })
     },
@@ -18,7 +22,7 @@ const theme = extendTheme({
             variants: {
                 'main-style': {
                     bgColor: 'whiteAlpha.300',
-                    boxShadow: '8px 3px 12px -2px rgba(66, 68, 90, 1)',
+                    boxShadow: '4px 3px 8px -1px rgba(66, 68, 90, 1)',
                     _hover: {
                         bgColor: 'whiteAlpha.600'
                     }

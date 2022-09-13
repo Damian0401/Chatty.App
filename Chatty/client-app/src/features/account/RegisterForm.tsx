@@ -55,7 +55,7 @@ export default function RegisterForm() {
                             <Flex pt='2'>
                                 <ButtonGroup variant='main-style'>
                                     <Button type='submit'>
-                                        Submit
+                                        Register
                                     </Button>
                                     <Button as={Link} to='/'>
                                         Back

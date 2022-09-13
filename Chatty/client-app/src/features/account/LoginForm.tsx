@@ -45,7 +45,7 @@ export default function LoginForm() {
                             <Flex pt='2'>
                                 <ButtonGroup variant='main-style'>
                                     <Button type='submit'>
-                                        Submit
+                                        Login
                                     </Button>
                                     <Button as={Link} to='/'>
                                         Back
