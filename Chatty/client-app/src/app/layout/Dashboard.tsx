@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import { Outlet } from "react-router-dom"
-import ChatSidebar from "../../features/chat/ChatSidebar"
 import Navbar from "./Navbar"
+import Sidebar from "./Sidebar"
 
 
 
@@ -10,7 +10,7 @@ export default observer(function Dashboard() {
     return (
         <>
             <Navbar />
-            <ChatSidebar />
+            <Sidebar />
             <Outlet />
         </>
     )

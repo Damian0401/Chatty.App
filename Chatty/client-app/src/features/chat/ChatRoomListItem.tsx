@@ -1,10 +1,9 @@
-import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { Link } from "react-router-dom";
+import { Box, Flex, Spacer, Text } from "@chakra-ui/react"
+import { observer } from "mobx-react-lite"
+import { Link } from "react-router-dom"
 
 
-export default observer(function ChatSidebarRoom() {
-
+export default observer(function ChatRoomListItem() {
 
 
     return (

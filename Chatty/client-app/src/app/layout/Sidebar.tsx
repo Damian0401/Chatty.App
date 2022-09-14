@@ -1,10 +1,10 @@
 import { Text, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import ChatSidebarRoom from "./ChatSidebarRoom";
+import ChatRoomList from "../../features/chat/ChatRoomList";
 
 
 
-export default observer(function ChatSidebar() {
+export default observer(function Sidebar() {
 
     return (
         <VStack
@@ -16,21 +16,12 @@ export default observer(function ChatSidebar() {
             color='blackAlpha.700'
         >
             <Text
-                fontSize='lg' noOfLines={1} 
+                fontSize='lg' noOfLines={1}
                 maxWidth='14vw' p='1' as='b'
             >
                 Select channel:
             </Text>
-            <VStack
-                bgColor='whiteAlpha.100' p='2'
-                borderRadius='1rem' gap='0'
-                overflowY="auto" overflowX='hidden'
-                fontFamily='sans-serif'
-            >
-                <ChatSidebarRoom />
-                <ChatSidebarRoom />
-                <ChatSidebarRoom />
-            </VStack>
+            <ChatRoomList />
         </VStack>
     )
 })
