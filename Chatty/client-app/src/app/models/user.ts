@@ -6,6 +6,7 @@ export interface User {
 }
 
 export interface UserProfile {
+    id: string;
     userName: string;
     token: string;
 }
