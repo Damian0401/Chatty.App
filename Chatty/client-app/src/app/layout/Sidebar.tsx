@@ -13,7 +13,6 @@ export default observer(function Sidebar() {
             height='60vh'
             maxWidth='15vw'
             borderRadius='1rem'
-            color='blackAlpha.700'
         >
             <Text
                 fontSize='lg' noOfLines={1}

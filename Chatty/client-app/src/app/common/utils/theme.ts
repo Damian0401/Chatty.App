@@ -12,6 +12,7 @@ const theme = extendTheme({
             },
             body: {
                 bg: mode(lightBackground, darkBackground)(props),
+                color: mode('blackAlpha.700', 'whiteAlpha.600')(props),
                 margin: 0,
                 padding: 0,
             },
