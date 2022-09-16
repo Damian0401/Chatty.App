@@ -67,7 +67,7 @@ public class ChatHub : BaseHub
         }
 
         await Clients.Group(response.ResponseContent.CallerResponse.Id.ToString())
-            .SendAsync("AddUser", response.ResponseContent.ClientsResponse);
+            .SendAsync("AddToRoom", response.ResponseContent.ClientsResponse);
 
         await Groups.AddToGroupAsync(Context.ConnectionId,
             response.ResponseContent.CallerResponse.Id.ToString());

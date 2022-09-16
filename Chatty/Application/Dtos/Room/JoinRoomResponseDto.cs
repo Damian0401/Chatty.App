@@ -23,6 +23,7 @@ public class CallerResponseForJoinRoomResponseDto
 
 public class ClientsResponseForJoinRoomResponseDto
 {
+    public Guid Id { get; set; }
     public UserForJoinRoomResponseDto User { get; set; } = default!;
     public MessageForJoinRoomResponseDto Message { get; set; } = default!;
 }

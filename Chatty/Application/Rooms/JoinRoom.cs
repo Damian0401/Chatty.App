@@ -95,6 +95,7 @@ namespace Application.Rooms
 
                 var clientsResponse = new ClientsResponseForJoinRoomResponseDto
                 {
+                    Id = room.Id,
                     User = _mapper.Map<UserForJoinRoomResponseDto>(roomApplicationUser),
                     Message = _mapper.Map<MessageForJoinRoomResponseDto>(message)
                 };

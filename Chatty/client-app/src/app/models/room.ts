@@ -7,3 +7,9 @@ export interface Room {
     messages: Message[] | null;
     users: User[] | null;
 }
+
+export interface AddToRoomResponse {
+    id: string;
+    user: User;
+    message: Message;
+}

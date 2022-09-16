@@ -6,6 +6,7 @@ using Application.Core;
 using Application.Dtos.Room;
 using Application.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Presistance;
@@ -42,11 +43,12 @@ public class ConnectToChat
                     .Failure(new List<string> { "Access denied" });
 
             var rooms = await _context.Rooms
+                .ProjectTo<RoomForConnectToChatResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             var responseDto = new ConnectToChatResponseDto
             {
-                Rooms = _mapper.Map<List<RoomForConnectToChatResponseDto>>(rooms)
+                Rooms = rooms
             };
 
             return ResponseForHub<ConnectToChatResponseDto>

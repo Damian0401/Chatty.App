@@ -56,14 +56,23 @@ namespace Application.Core
                 .ForMember(x => x.Body, a =>
                     a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body))
                 .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
+            CreateMap<Message, MessageForConnectToChatResponseDto>()
+                .ForMember(x => x.Body, a =>
+                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body))
+                .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
             CreateMap<SendMessageRequestDto, Message>();
         }
 
         private void MapsForRoom()
         {
-            CreateMap<Room, RoomForConnectToChatResponseDto>();
+            CreateMap<Room, RoomForConnectToChatResponseDto>()
+                .ForMember(x => x.Messages, m => 
+                    m.MapFrom(s => s.Messages.OrderBy(d => 
+                        d.CreatedAt).Take(1)));
             CreateMap<Room, CreateRoomResponseDto>();
-            CreateMap<Room, GetRoomDetailsResponseDto>();
+            CreateMap<Room, GetRoomDetailsResponseDto>()
+                .ForMember(x => x.Messages, m => m.MapFrom(s => 
+                    s.Messages.OrderBy(d => d.CreatedAt)));
             CreateMap<Room, CallerResponseForJoinRoomResponseDto>();
         }
     }
