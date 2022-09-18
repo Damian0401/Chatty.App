@@ -1,26 +1,38 @@
-import { Text, VStack } from "@chakra-ui/react";
+import { Button, Container, Text, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import ChatRoomList from "../../features/chat/ChatRoomList";
+import { Link } from "react-router-dom";
+import ChatRoomList from "../../features/chat/list/ChatRoomList";
 
 
 
 export default observer(function Sidebar() {
 
     return (
-        <VStack
-            bgColor='whiteAlpha.300'
-            m='5' p='2' pos='fixed' left='0'
-            height='60vh'
+
+        <Container
+            variant='main-style'
+            m='5' mt='5%' p='2' pos='fixed' left='0'
             maxWidth='15vw'
             borderRadius='1rem'
         >
-            <Text
-                fontSize='lg' noOfLines={1}
-                maxWidth='14vw' p='1' as='b'
+            <VStack
+                height='60vh'
             >
-                Select channel:
-            </Text>
-            <ChatRoomList />
-        </VStack>
+                <Text
+                    fontSize='lg' noOfLines={1}
+                    maxWidth='14vw' p='1' as='b'
+                >
+                    Select channel:
+                </Text>
+                <ChatRoomList />
+                <Button 
+                    width='100%' 
+                    variant='main-style'
+                    as={Link} to='/chat'
+                >
+                    Back to panel
+                </Button>
+            </VStack>
+        </Container>
     )
 })

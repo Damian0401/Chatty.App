@@ -36,13 +36,19 @@ public class ConnectToChat
                 .GetCurrentlyLoggedUserName();
 
             var user = await _context.Users
+                .Include(x => x.Rooms)
                 .FirstOrDefaultAsync(x => x.UserName.Equals(userName));
 
             if (user is null)
                 return ResponseForHub<ConnectToChatResponseDto>
                     .Failure(new List<string> { "Access denied" });
 
+            var roomIds = user.Rooms
+                .Select(x => x.RoomId)
+                .ToList();
+
             var rooms = await _context.Rooms
+                .Where(x => roomIds.Contains(x.Id))
                 .ProjectTo<RoomForConnectToChatResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 

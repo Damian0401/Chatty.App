@@ -1,3 +1,4 @@
+using System.Linq;
 using Application.Dtos.Account;
 using Application.Dtos.Message;
 using Application.Dtos.Room;
@@ -67,12 +68,12 @@ namespace Application.Core
         {
             CreateMap<Room, RoomForConnectToChatResponseDto>()
                 .ForMember(x => x.Messages, m => 
-                    m.MapFrom(s => s.Messages.OrderBy(d => 
+                    m.MapFrom(s => s.Messages.OrderByDescending(d => 
                         d.CreatedAt).Take(1)));
             CreateMap<Room, CreateRoomResponseDto>();
             CreateMap<Room, GetRoomDetailsResponseDto>()
                 .ForMember(x => x.Messages, m => m.MapFrom(s => 
-                    s.Messages.OrderBy(d => d.CreatedAt)));
+                    s.Messages.OrderByDescending(d => d.CreatedAt)));
             CreateMap<Room, CallerResponseForJoinRoomResponseDto>();
         }
     }

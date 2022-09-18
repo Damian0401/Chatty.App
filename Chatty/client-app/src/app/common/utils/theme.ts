@@ -16,6 +16,14 @@ const theme = extendTheme({
                 margin: 0,
                 padding: 0,
             },
+            '&::-webkit-scrollbar': {
+                width: '16px',
+                borderRadius: '8px',
+                backgroundColor: `rgba(0, 0, 0, 0.05)`,
+            },
+            '&::-webkit-scrollbar-thumb': {
+                backgroundColor: `rgba(0, 0, 0, 0.05)`,
+            },
         })
     },
     components: {
@@ -35,7 +43,8 @@ const theme = extendTheme({
                 'main-style': {
                     bgColor: 'whiteAlpha.300',
                     borderRadius: '1rem',
-                    padding: '4'
+                    padding: '4',
+                    boxShadow: '4px 3px 8px -1px rgba(66, 68, 90, 1)',
                 }
             }
         },

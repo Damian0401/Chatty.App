@@ -1,7 +1,7 @@
 import { Box, Flex, Spacer, Text } from "@chakra-ui/react"
 import { observer } from "mobx-react-lite"
 import { Link } from "react-router-dom"
-import { Room } from "../../app/models/room"
+import { Room } from "../../../app/models/room"
 
 interface Props {
     room: Room;
@@ -25,7 +25,7 @@ export default observer(function ChatRoomListItem({ room }: Props) {
                 <Spacer />
             </Flex>
             {room.messages && room.messages.length > 0 &&
-                <Text noOfLines={1}>{room.messages[0].body}</Text>
+                <Text noOfLines={1}>{room.messages[room.messages.length - 1].body}</Text>
             }
         </Box>
     )
