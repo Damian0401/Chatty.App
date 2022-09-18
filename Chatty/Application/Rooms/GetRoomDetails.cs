@@ -49,6 +49,10 @@ public class GetRoomDetails
                 return ResponseForHub<GetRoomDetailsResponseDto>
                     .Failure(new List<string> { "Room not found" });
 
+            if (!room.Users.Any(x => x.UserId.Equals(user.Id)))
+                return ResponseForHub<GetRoomDetailsResponseDto>
+                    .Failure(new List<string> { "Access denied" });
+
             var responseDto = _mapper.Map<GetRoomDetailsResponseDto>(room);
 
             return ResponseForHub<GetRoomDetailsResponseDto>
