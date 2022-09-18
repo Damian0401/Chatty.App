@@ -39,28 +39,22 @@ namespace Application.Core
 
             CreateMap<Message, SendMessageResponseDto>()
                 .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body))
-                .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
+                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, MessageForCreateRoomResponseDto>()
                 .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body))
-                .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
+                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, DeleteMessageResponseDto>()
                 .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body))
-                .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
+                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, MessageForGetRoomDetailsResponseDto>()
                 .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body))
-                .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
+                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, MessageForJoinRoomResponseDto>()
                 .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body))
-                .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
+                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, MessageForConnectToChatResponseDto>()
                 .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body))
-                .ForMember(x => x.AuthorId, a => a.Condition(s => !s.IsDeleted));
+                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<SendMessageRequestDto, Message>();
         }
 

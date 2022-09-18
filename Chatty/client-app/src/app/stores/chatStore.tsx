@@ -2,7 +2,7 @@ import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { makeAutoObservable, runInAction } from "mobx";
 import { history } from "../..";
 import { BASE_URL } from "../common/utils/constants";
-import { Message } from "../models/message";
+import { Message, MessageSendValues } from "../models/message";
 import { AddToRoomResponse, Room } from "../models/room";
 import { store } from "./store";
 
@@ -67,18 +67,29 @@ export default class ChatStore {
         this.hubConnection?.invoke('JoinRoom', roomId);
     }
 
+    sendMessage = (body: string) => {
+        if (!this.selectedRoom || !this.hubConnection) return;
+
+        let message: MessageSendValues = {
+            roomId: this.selectedRoom.id,
+            body: body
+        };
+
+        this.hubConnection.invoke('SendMessage', message);
+    }
+
     get isRoomAdministrator() {
-        return this.selectedRoom?.users?.some(u => 
+        return this.selectedRoom?.users?.some(u =>
             u.isAdministrator && u.id === store.userStore.user?.id);
     }
 
     private setRoom = (room: Room) => {
         room.messages?.forEach((message: Message) => {
-            message.createdAt = new Date(message.createdAt + 'Z');
+            message.createdAt = new Date(message.createdAt);
         });
 
         runInAction(() => this.roomRegistry.set(room.id, room));
-        
+
         if (this.selectedRoom?.id === room.id) {
             runInAction(() => this.selectedRoom = room);
         }
@@ -98,15 +109,18 @@ export default class ChatStore {
 
     private addMessage = (message: Message) => {
         const room = this.getRoom(message.roomId);
-        if (!room || !room.messages) return;
+        if (!room) return;
+        
+        if (!room.messages) room.messages = [];
+        
+        message.createdAt = new Date(message.createdAt);
+        let messageIndex = room.messages.findIndex(x => x.id === message.id);
+        console.log(messageIndex);
 
-        message.createdAt = new Date(message.createdAt + 'Z');
-        let messageId = room.messages.findIndex(x => x.id === message.id);
-
-        if (messageId === -1) {
-            room.messages.push(message);
+        if (messageIndex === -1) {
+            room.messages.unshift(message);
         } else {
-            room.messages[messageId] = message;
+            room.messages[messageIndex] = message;
         }
     }
 }

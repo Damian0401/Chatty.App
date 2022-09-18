@@ -7,6 +7,7 @@ import ChatPanel from "../../features/chat/panel/ChatPanel";
 import ChatRoom from "../../features/chat/room/ChatRoom";
 import NotFound from "../../features/errors/NotFound";
 import HomePage from "../../features/home/HomePage";
+import ModalContainer from "./ModalContainer";
 import Dashboard from "./Dashboard";
 import ToggleThemeButton from "./ToggleThemeButton";
 
@@ -15,6 +16,7 @@ function App() {
   return (
     <>
       <ToastContainer position='bottom-right' hideProgressBar />
+      <ModalContainer />
       <ToggleThemeButton />
       <Routes>
         <Route index element={<HomePage />} />

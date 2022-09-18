@@ -1,5 +1,5 @@
-import { CalendarIcon, ChatIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { Flex, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Spacer, Text } from "@chakra-ui/react";
+import { CalendarIcon, ChatIcon, ChevronDownIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { Button, Flex, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Spacer, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { useStore } from "../stores/store";
@@ -20,29 +20,26 @@ export default observer(function Navbar() {
                     </Text>
                 </HStack>
                 <Spacer />
-                <HStack>
-                    <Text color='whiteAlpha.800'>
-                        {userStore.user?.userName || '{userName}'}
-                    </Text>
                     <Menu>
                         <MenuButton
-                            as={IconButton}
+                            as={Button}
                             aria-label='Options'
-                            icon={<HamburgerIcon />}
-                            variant='main-style'
+                            rightIcon={<ChevronDownIcon />}
+                            variant='ghost'
                             boxShadow='base'
                             color='whiteAlpha.800'
-                        />
+                            fontFamily='sans-serif'
+                            _hover={{bgColor: 'whiteAlpha.300'}}
+                            _active={{bgColor: 'whiteAlpha.300'}}
+                        >
+                            {userStore.user?.userName || '{userName}'}
+                        </MenuButton>
                         <MenuList>
-                            <MenuItem icon={<ChatIcon />} as={Link} to='/chat'>
-                                Chat panel
-                            </MenuItem>
                             <MenuItem icon={<CloseIcon />} onClick={() => userStore.logout()}>
                                 Logout
                             </MenuItem>
                         </MenuList>
                     </Menu>
-                </HStack>
             </Flex>
         </>
     )

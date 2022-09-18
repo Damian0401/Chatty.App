@@ -13,9 +13,9 @@ export default observer(function ChatRoomListItem({ room }: Props) {
     return (
         <Box
             bgColor='whiteAlpha.200'
-            p='1' maxWidth='12vw'
             as={Link} to={`/chat/${room.id}`}
             borderRadius='0.2rem'
+            width='100%' p='1'
             _hover={{ bgColor: 'whiteAlpha.300' }}
         >
             <Flex>

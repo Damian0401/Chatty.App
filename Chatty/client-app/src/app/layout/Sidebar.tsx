@@ -11,7 +11,7 @@ export default observer(function Sidebar() {
 
         <Container
             variant='main-style'
-            m='5' mt='5%' p='2' pos='fixed' left='0'
+            m='5' mt='4%' p='2' pos='fixed' left='0'
             maxWidth='15vw'
             borderRadius='1rem'
         >
