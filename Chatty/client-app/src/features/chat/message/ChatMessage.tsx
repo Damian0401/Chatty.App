@@ -12,7 +12,7 @@ interface Props {
 
 export default observer(function ChatRoomMessage({ message }: Props) {
 
-    const { userStore: { user }, chatStore: { selectedRoom, isRoomAdministrator } } = useStore();
+    const { userStore: { user }, chatStore: { selectedRoom, isRoomAdministrator, deleteMessage } } = useStore();
 
     const [isAuthor, setIsAuthor] = useState(false);
 
@@ -37,9 +37,9 @@ export default observer(function ChatRoomMessage({ message }: Props) {
                     maxWidth='100%'
                     boxShadow='xl'
                 >
-                    <Text as='b' noOfLines={1}>
+                    {!isAuthor && <Text as='b' noOfLines={1}>
                         {selectedRoom?.users?.find(x => x.id === message.authorId)?.displayName}:
-                    </Text>
+                    </Text>}
                     <Text>
                         {message.body}
                     </Text>
@@ -51,6 +51,7 @@ export default observer(function ChatRoomMessage({ message }: Props) {
                         aria-label='delete message'
                         size='xs' bgColor='none'
                         variant='ghost' icon={<DeleteIcon />}
+                        onClick={() => deleteMessage(message.id)}
                     />
                 </Flex>}
         </Box>

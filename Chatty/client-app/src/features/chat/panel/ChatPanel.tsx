@@ -36,7 +36,7 @@ export default observer(function ChatPanel() {
             >
                 <Flex flexDirection='column' height='100%' justifyContent='space-between'>
                     <Text fontSize='2xl' noOfLines={3}>
-                        Welcome to the chat control panel, <strong>{user ? user.userName : '{userName}'}</strong>.
+                        Welcome to the chat panel, <strong>{user ? user.userName : '{userName}'}</strong>.
                         Here you can create a new chat room or join to existing one.
                     </Text>
                     <Flex justifyContent='space-between'>

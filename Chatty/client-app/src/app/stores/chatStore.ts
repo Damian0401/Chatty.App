@@ -81,6 +81,10 @@ export default class ChatStore {
 
         this.hubConnection.invoke('SendMessage', message);
     }
+    
+    deleteMessage = (messageId: string) => {
+        this.hubConnection?.invoke('DeleteMessage', messageId);
+    }
 
     get isRoomAdministrator() {
         return this.selectedRoom?.users?.some(u =>

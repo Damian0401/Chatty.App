@@ -1,4 +1,4 @@
-import { ArrowBackIcon, ChevronDownIcon, DeleteIcon, EditIcon, HamburgerIcon, LinkIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ChevronDownIcon, DeleteIcon, EditIcon, LinkIcon, SettingsIcon } from "@chakra-ui/icons";
 import { Box, Button, Container, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverTrigger, Spacer } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { toast } from "react-toastify";
@@ -23,7 +23,7 @@ export default observer(function ChatRoomHeader() {
                 <Menu>
                     <MenuButton
                         as={Button}
-                        rightIcon={<HamburgerIcon />}
+                        rightIcon={<SettingsIcon />}
                         aria-label='Options'
                         borderRadius='1rem 0 1rem 0'
                         variant='main-style'
@@ -66,7 +66,7 @@ export default observer(function ChatRoomHeader() {
                                     {user.displayName}
                                     {user.id === userStore.user?.id && ' (You) '}
                                     {user.isAdministrator && ' (admin) '}
-                                    {chatStore.isRoomAdministrator && !user.isAdministrator &&
+                                    {chatStore.isRoomAdministrator && 
                                         <IconButton
                                             aria-label='delete user'
                                             bgColor='transparent'
