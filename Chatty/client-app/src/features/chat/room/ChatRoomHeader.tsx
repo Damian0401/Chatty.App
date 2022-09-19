@@ -1,5 +1,5 @@
-import { ArrowBackIcon, ChevronDownIcon, DeleteIcon, EditIcon, HamburgerIcon, LinkIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Box, Button, Container, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverTrigger, Spacer, Text } from "@chakra-ui/react";
+import { ArrowBackIcon, ChevronDownIcon, DeleteIcon, EditIcon, HamburgerIcon, LinkIcon } from "@chakra-ui/icons";
+import { Box, Button, Container, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverTrigger, Spacer } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { toast } from "react-toastify";
 import { store, useStore } from "../../../app/stores/store";
@@ -35,37 +35,48 @@ export default observer(function ChatRoomHeader() {
                             Change display name
                         </MenuItem>
                         <MenuItem icon={<LinkIcon />} onClick={handleInvitationClick}>
-                            Copy invitation code 
+                            Copy invitation code
                         </MenuItem>
+                        {chatStore.isRoomAdministrator &&
+                            <MenuItem icon={<DeleteIcon />} onClick={handleInvitationClick}>
+                                Delete room
+                            </MenuItem>}
                         <MenuItem icon={<ArrowBackIcon />}>
                             Exit room
                         </MenuItem>
                     </MenuList>
                 </Menu>
                 <Spacer />
-                    <Popover placement='bottom-end'>
-                        <PopoverTrigger>
-                            <Button
-                                leftIcon={<ChevronDownIcon />}
-                                variant='main-style'
-                                borderRadius='0 1rem 0 1rem'
-                            >
-                                Users ({chatStore.selectedRoom?.users?.length})
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverCloseButton />
-                            <PopoverBody>
-                                {chatStore.selectedRoom?.users?.map(user => (
-                                    <Box key={user.id}>
-                                        {user.displayName} {user.id === userStore.user?.id && '(You) '}
-                                        {chatStore.isRoomAdministrator && <DeleteIcon />}
-                                    </Box>
-                                ))}
-                            </PopoverBody>
-                        </PopoverContent>
-                    </Popover>
+                <Popover placement='bottom-end'>
+                    <PopoverTrigger>
+                        <Button
+                            leftIcon={<ChevronDownIcon />}
+                            variant='main-style'
+                            borderRadius='0 1rem 0 1rem'
+                        >
+                            Users ({chatStore.selectedRoom?.users?.length || '?'})
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent pos='relative'>
+                        <PopoverArrow />
+                        <PopoverCloseButton pos='absolute' top='0' right='0' />
+                        <PopoverBody mt='3'>
+                            {chatStore.selectedRoom?.users?.map(user => (
+                                <Box key={user.id} _hover={{ bgColor: 'gray.100' }} borderRadius='0.5rem' p='1'>
+                                    {user.displayName}
+                                    {user.id === userStore.user?.id && ' (You) '}
+                                    {user.isAdministrator && ' (admin) '}
+                                    {chatStore.isRoomAdministrator && !user.isAdministrator &&
+                                        <IconButton
+                                            aria-label='delete user'
+                                            bgColor='transparent'
+                                            size='xs' icon={<DeleteIcon />}
+                                        />}
+                                </Box>
+                            ))}
+                        </PopoverBody>
+                    </PopoverContent>
+                </Popover>
             </Flex>
         </Container>
     )

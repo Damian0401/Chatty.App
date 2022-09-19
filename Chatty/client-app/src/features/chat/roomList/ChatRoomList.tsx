@@ -13,7 +13,7 @@ export default observer(function ChatRoomList() {
         createHubConnection();
 
         return () => stopHubConnection();
-    }, [])
+    }, [createHubConnection, stopHubConnection])
 
     return (
         <VStack

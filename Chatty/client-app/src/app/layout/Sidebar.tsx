@@ -1,7 +1,7 @@
 import { Button, Container, Text, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
-import ChatRoomList from "../../features/chat/list/ChatRoomList";
+import ChatRoomList from "../../features/chat/roomList/ChatRoomList";
 
 
 

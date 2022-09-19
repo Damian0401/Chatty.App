@@ -1,4 +1,5 @@
-import { Box, Flex, Spacer, Text } from "@chakra-ui/react"
+import { Box, Flex, Spacer, Text, Tooltip } from "@chakra-ui/react"
+import { formatDistanceToNow } from "date-fns";
 import { observer } from "mobx-react-lite"
 import { Link } from "react-router-dom"
 import { Room } from "../../../app/models/room"
@@ -25,7 +26,9 @@ export default observer(function ChatRoomListItem({ room }: Props) {
                 <Spacer />
             </Flex>
             {room.messages && room.messages.length > 0 &&
-                <Text noOfLines={1}>{room.messages[room.messages.length - 1].body}</Text>
+            <Tooltip hasArrow label={formatDistanceToNow(room.messages[0].createdAt) + ' ago'}>
+                <Text noOfLines={1}>{room.messages[0].body}</Text>
+            </Tooltip>
             }
         </Box>
     )

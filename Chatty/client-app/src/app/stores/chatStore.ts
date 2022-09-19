@@ -1,7 +1,7 @@
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { makeAutoObservable, runInAction } from "mobx";
 import { history } from "../..";
-import { BASE_URL } from "../common/utils/constants";
+import { BASE_CHAT_URL } from "../common/utils/constants";
 import { Message, MessageSendValues } from "../models/message";
 import { AddToRoomResponse, Room } from "../models/room";
 import { store } from "./store";
@@ -21,7 +21,7 @@ export default class ChatStore {
         if (!store.commonStore.token) return;
 
         this.hubConnection = new HubConnectionBuilder()
-            .withUrl(BASE_URL + '/hubs/chat', {
+            .withUrl(BASE_CHAT_URL, {
                 accessTokenFactory: () => store.commonStore.token!
             })
             .withAutomaticReconnect()
@@ -31,7 +31,7 @@ export default class ChatStore {
             .catch(error => console.log('Error establishing the connection: ', error));
 
         this.hubConnection.on('AddToRoom', (response: AddToRoomResponse) => this.addToRoom(response));
-        this.hubConnection.on('AddRoom', (room: Room) => this.setRoom(room));
+        this.hubConnection.on('AddRoom', (room: Room) => this.addRoom(room));
         this.hubConnection.on('HandleErrors', (errors) => console.log(errors));
         this.hubConnection.on('ConnectToChat', (rooms: Room[]) => rooms.forEach(room => this.setRoom(room)));
         this.hubConnection.on('RecieveMessage', (message: Message) => this.addMessage(message));
@@ -66,6 +66,10 @@ export default class ChatStore {
     joinRoom = (roomId: string) => {
         this.hubConnection?.invoke('JoinRoom', roomId);
     }
+    
+    createRoom = (roomName: string) => {
+        this.hubConnection?.invoke('CreateRoom', roomName);
+    }
 
     sendMessage = (body: string) => {
         if (!this.selectedRoom || !this.hubConnection) return;
@@ -81,6 +85,12 @@ export default class ChatStore {
     get isRoomAdministrator() {
         return this.selectedRoom?.users?.some(u =>
             u.isAdministrator && u.id === store.userStore.user?.id);
+    }
+
+    private addRoom = (room: Room) => {
+        this.setRoom(room);
+
+        history.push(`/chat/${room.id}`)
     }
 
     private setRoom = (room: Room) => {
@@ -103,8 +113,13 @@ export default class ChatStore {
         const room = this.getRoom(response.id);
         if (!room) return;
 
+        response.message.createdAt = new Date(response.message.createdAt);
         room.users?.push(response.user);
         room.messages?.push(response.message);
+
+        if (room.id === this.selectedRoom?.id) {
+            this.selectedRoom = room;
+        }
     }
 
     private addMessage = (message: Message) => {
@@ -115,12 +130,15 @@ export default class ChatStore {
         
         message.createdAt = new Date(message.createdAt);
         let messageIndex = room.messages.findIndex(x => x.id === message.id);
-        console.log(messageIndex);
 
         if (messageIndex === -1) {
             room.messages.unshift(message);
         } else {
             room.messages[messageIndex] = message;
+        }
+
+        if (room.id === this.selectedRoom?.id) {
+            this.selectedRoom = room;
         }
     }
 }

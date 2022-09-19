@@ -1,12 +1,30 @@
-import { Button, Center, Container, Flex, FormControl, FormLabel, Input, Text } from "@chakra-ui/react"
+import { Button, Center, Container, Flex, Text } from "@chakra-ui/react"
 import { observer } from "mobx-react-lite"
+import InputModal from "../../../app/common/modals/InputModal";
 import { useStore } from "../../../app/stores/store";
-
 
 
 export default observer(function ChatPanel() {
 
-    const { userStore: { user } } = useStore();
+    const { userStore: { user }, modalStore: { openModal }, chatStore: {joinRoom, createRoom} } = useStore();
+
+    const handleJoinClick = () => {
+        openModal(<InputModal 
+            description='Enter invitation code of the room that you want to join:'
+            buttonText='Join'
+            buttonColor='blue.600'
+            handleSubmit={(value) => joinRoom(value)}
+        />)
+    }
+
+    const handleCreateClick = () => {
+        openModal(<InputModal 
+            description='Enter the name of room that you want to create:'
+            buttonText='Create'
+            buttonColor='green.600'
+            handleSubmit={(value) => createRoom(value)}
+        />)
+    }
 
     return (
         <Center>
@@ -22,10 +40,10 @@ export default observer(function ChatPanel() {
                         Here you can create a new chat room or join to existing one.
                     </Text>
                     <Flex justifyContent='space-between'>
-                        <Button variant='main-style' size='lg' onClick={() => console.log('Open join modal')}>
+                        <Button variant='main-style' size='lg' onClick={handleJoinClick}>
                             Join
                         </Button>
-                        <Button variant='main-style' size='lg' onClick={() => console.log('Open create modal')}>
+                        <Button variant='main-style' size='lg' onClick={handleCreateClick}>
                             Create
                         </Button>
                     </Flex>
