@@ -1,7 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { BASE_API_URL } from "../common/utils/constants";
+import { showErrors } from "../common/utils/helpers";
 import { UserLoginValues, UserProfile, UserRegisterValues } from "../models/user";
 import { store } from "../stores/store";
+import { history } from "../.."
+import { toast } from "react-toastify";
 
 
 axios.defaults.baseURL = BASE_API_URL;
@@ -13,6 +16,23 @@ axios.interceptors.request.use(request => {
     if (token) request.headers!.Authorization = `Bearer ${token}`;
     return request;
 });
+
+axios.interceptors.response.use(response => response, (error: AxiosError) => {
+    const { data, status } = error.response!;
+    switch (status) {
+        case 400:
+            showErrors(data);
+            break;
+        case 401:
+            store.userStore.logout();
+            toast.error('Session expired - please login again');
+            break;
+        case 404:
+            history.push('/chat/notfound');
+            break;
+    }
+    return Promise.reject(error);
+})
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 

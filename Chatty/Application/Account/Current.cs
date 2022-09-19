@@ -22,10 +22,13 @@ public class Current
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserAccessor _userAccessor;
         private readonly IMapper _mapper;
+        private readonly IJwtGenerator _jwtGenerator;
 
-        public Handler(UserManager<ApplicationUser> userManager, IUserAccessor userAccessor, IMapper mapper)
+        public Handler(UserManager<ApplicationUser> userManager, IUserAccessor userAccessor, 
+            IMapper mapper, IJwtGenerator jwtGenerator)
         {
             _mapper = mapper;
+            _jwtGenerator = jwtGenerator;
             _userAccessor = userAccessor;
             _userManager = userManager;
         }
@@ -40,6 +43,8 @@ public class Current
                 return new ResponseForController<CurrentResponseDto>(HttpStatusCode.Unauthorized);
 
             var responseDto = _mapper.Map<CurrentResponseDto>(user);
+
+            responseDto.Token = _jwtGenerator.CreateToken(user);
 
             return new ResponseForController<CurrentResponseDto>(HttpStatusCode.OK, responseDto);
         }

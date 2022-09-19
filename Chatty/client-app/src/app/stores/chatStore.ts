@@ -2,6 +2,7 @@ import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { makeAutoObservable, runInAction } from "mobx";
 import { history } from "../..";
 import { BASE_CHAT_URL } from "../common/utils/constants";
+import { showErrors } from "../common/utils/helpers";
 import { Message, MessageSendValues } from "../models/message";
 import { AddToRoomResponse, Room } from "../models/room";
 import { store } from "./store";
@@ -32,7 +33,7 @@ export default class ChatStore {
 
         this.hubConnection.on('AddToRoom', (response: AddToRoomResponse) => this.addToRoom(response));
         this.hubConnection.on('AddRoom', (room: Room) => this.addRoom(room));
-        this.hubConnection.on('HandleErrors', (errors) => console.log(errors));
+        this.hubConnection.on('HandleErrors', (errors) => showErrors(errors));
         this.hubConnection.on('ConnectToChat', (rooms: Room[]) => rooms.forEach(room => this.setRoom(room)));
         this.hubConnection.on('RecieveMessage', (message: Message) => this.addMessage(message));
         this.hubConnection.on('GetRoomDetails', (room: Room) => this.setRoom(room));

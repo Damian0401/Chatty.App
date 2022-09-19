@@ -16,10 +16,15 @@ import ToggleThemeButton from "./ToggleThemeButton";
 
 function App() {
 
-  const { userStore: { user }} = useStore();
+  const { userStore, commonStore } = useStore();
 
   useEffect(() => {
-    if (!user) history.push('/');
+    if (!commonStore.token) {
+      history.push('/');
+      return;
+    };
+    history.push('/chat')
+    userStore.getUser();
   }, []);
 
   return (

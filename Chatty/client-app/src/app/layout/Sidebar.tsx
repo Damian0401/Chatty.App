@@ -25,12 +25,14 @@ export default observer(function Sidebar() {
                     Select channel:
                 </Text>
                 <ChatRoomList />
-                <Button 
-                    width='100%' 
+                <Button
+                    width='100%'
                     variant='main-style'
                     as={Link} to='/chat'
                 >
-                    Back to panel
+                    <Text noOfLines={1}>
+                        Back to panel
+                    </Text>
                 </Button>
             </VStack>
         </Container>

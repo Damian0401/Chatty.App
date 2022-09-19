@@ -13,14 +13,10 @@ export default class UserStore {
     }
 
     login = async (values: UserLoginValues) => {
-        try {
-            const user = await agent.Account.login(values);
-            store.commonStore.setToken(user.token);
-            runInAction(() => this.user = user);
-            history.push('/chat')
-        } catch (error) {
-            console.error(error);
-        }
+        const user = await agent.Account.login(values);
+        store.commonStore.setToken(user.token);
+        runInAction(() => this.user = user);
+        history.push('/chat')
     }
 
     logout = () => {
@@ -30,13 +26,15 @@ export default class UserStore {
     }
 
     register = async (values: UserRegisterValues) => {
-        try {
-            const user = await agent.Account.register(values);
-            store.commonStore.setToken(user.token);
-            runInAction(() => this.user = user);
-            history.push('/chat')
-        } catch (error) {
-            console.error(error);
-        }
+        const user = await agent.Account.register(values);
+        store.commonStore.setToken(user.token);
+        runInAction(() => this.user = user);
+        history.push('/chat')
+    }
+
+    getUser = async () => {
+        const user = await agent.Account.current();
+        store.commonStore.setToken(user.token);
+        runInAction(() => this.user = user);
     }
 }
