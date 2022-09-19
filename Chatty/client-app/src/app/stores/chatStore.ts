@@ -5,8 +5,8 @@ import { BASE_CHAT_URL } from "../common/utils/constants";
 import { showErrors } from "../common/utils/helpers";
 import { Message, MessageSendValues } from "../models/message";
 import { AddToRoomResponse, Room } from "../models/room";
+import { User } from "../models/user";
 import { store } from "./store";
-
 
 
 export default class ChatStore {
@@ -94,7 +94,6 @@ export default class ChatStore {
 
     private addRoom = (room: Room) => {
         this.setRoom(room);
-
         history.push(`/chat/${room.id}`)
     }
 
@@ -102,7 +101,6 @@ export default class ChatStore {
         room.messages?.forEach((message: Message) => {
             message.createdAt = new Date(message.createdAt);
         });
-
         runInAction(() => this.roomRegistry.set(room.id, room));
 
         if (this.selectedRoom?.id === room.id) {
@@ -115,22 +113,13 @@ export default class ChatStore {
     }
 
     private addToRoom = (response: AddToRoomResponse) => {
-        const room = this.getRoom(response.id);
-        if (!room) return;
-
-        response.message.createdAt = new Date(response.message.createdAt);
-        room.users?.push(response.user);
-        room.messages?.push(response.message);
-
-        if (room.id === this.selectedRoom?.id) {
-            this.selectedRoom = room;
-        }
+        this.addMessage(response.message);
+        this.addUser(response.user, response.id);
     }
 
     private addMessage = (message: Message) => {
         const room = this.getRoom(message.roomId);
         if (!room) return;
-        
         if (!room.messages) room.messages = [];
         
         message.createdAt = new Date(message.createdAt);
@@ -140,6 +129,24 @@ export default class ChatStore {
             room.messages.unshift(message);
         } else {
             room.messages[messageIndex] = message;
+        }
+
+        if (room.id === this.selectedRoom?.id) {
+            this.selectedRoom = room;
+        }
+    }
+
+    private addUser = (user: User, roomId: string) => {
+        const room = this.getRoom(roomId);
+        if (!room) return;
+        if (!room.users) room.users = [];
+
+        let userIndex = room.users.findIndex(x => x.id === user.id);
+
+        if (userIndex === -1) {
+            room.users.unshift(user);
+        } else {
+            room.users[userIndex] = user;
         }
 
         if (room.id === this.selectedRoom?.id) {

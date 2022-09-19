@@ -26,7 +26,7 @@ export default function RegisterForm() {
                     validationSchema={Yup.object({
                         email: Yup.string().required().email(),
                         password: Yup.string().required().min(6),
-                        userName: Yup.string().required()
+                        userName: Yup.string().required().min(6)
                     })}
                 >
                     {({ handleSubmit, errors, touched }) => (

@@ -9,8 +9,6 @@ import { toast } from "react-toastify";
 
 axios.defaults.baseURL = BASE_API_URL;
 
-axios.interceptors.response.use(async response => response, (error: AxiosError) => {console.log(error);});
-
 axios.interceptors.request.use(request => {
     const token = store.commonStore.token;
     if (token) request.headers!.Authorization = `Bearer ${token}`;
@@ -23,8 +21,8 @@ axios.interceptors.response.use(response => response, (error: AxiosError) => {
         case 400:
             showErrors(data);
             break;
-        case 401:
-            store.userStore.logout();
+            case 401:
+                store.userStore.logout();
             toast.error('Session expired - please login again');
             break;
         case 404:

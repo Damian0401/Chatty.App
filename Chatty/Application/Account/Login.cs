@@ -38,13 +38,13 @@ public class Login
                 .FindByEmailAsync(request.Dto.Email);
 
             if (user is null)
-                return new ResponseForController<LoginResponseDto>(HttpStatusCode.Unauthorized);
+                return new ResponseForController<LoginResponseDto>(HttpStatusCode.BadRequest);
 
             var result = await _signInManager
                 .CheckPasswordSignInAsync(user, request.Dto.Password, false);
 
             if (!result.Succeeded)
-                return new ResponseForController<LoginResponseDto>(HttpStatusCode.Unauthorized);
+                return new ResponseForController<LoginResponseDto>(HttpStatusCode.BadRequest, new List<string> { "Invalid email or password." });
 
             var responseDto = _mapper.Map<LoginResponseDto>(user);
 
