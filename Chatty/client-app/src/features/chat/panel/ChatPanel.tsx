@@ -12,7 +12,6 @@ export default observer(function ChatPanel() {
         openModal(<InputModal 
             description='Enter invitation code of the room that you want to join:'
             buttonText='Join'
-            buttonColor='blue.600'
             handleSubmit={(value) => joinRoom(value)}
         />)
     }
@@ -21,7 +20,6 @@ export default observer(function ChatPanel() {
         openModal(<InputModal 
             description='Enter the name of room that you want to create:'
             buttonText='Create'
-            buttonColor='green.600'
             handleSubmit={(value) => createRoom(value)}
         />)
     }

@@ -25,6 +25,9 @@ namespace Application.Core
             CreateMap<RoomApplicationUser, UserForJoinRoomResponseDto>()
                 .ForMember(x => x.Id, a =>
                     a.MapFrom(s => s.UserId));
+            CreateMap<RoomApplicationUser, UserForChangeDisplayNameResponseDto>()
+                .ForMember(x => x.Id, a =>
+                    a.MapFrom(s => s.UserId));
             CreateMap<RoomApplicationUser, UserForCreateRoomResponseDto>()
                 .ForMember(x => x.Id, a =>
                     a.MapFrom(s => s.UserId));
@@ -50,6 +53,9 @@ namespace Application.Core
                 .ForMember(x => x.Body, a =>
                     a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, MessageForJoinRoomResponseDto>()
+                .ForMember(x => x.Body, a =>
+                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
+            CreateMap<Message, MessageForChangeDisplayNameResponseDto>()
                 .ForMember(x => x.Body, a =>
                     a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, MessageForConnectToChatResponseDto>()

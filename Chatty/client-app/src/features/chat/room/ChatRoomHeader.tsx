@@ -2,19 +2,28 @@ import { ArrowBackIcon, ChevronDownIcon, DeleteIcon, EditIcon, LinkIcon, Setting
 import { Box, Button, Container, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverTrigger, Spacer } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { toast } from "react-toastify";
+import InputModal from "../../../app/common/modals/InputModal";
 import { store, useStore } from "../../../app/stores/store";
 
 
 
 export default observer(function ChatRoomHeader() {
 
-    const { chatStore, userStore } = useStore();
+    const { chatStore, userStore, modalStore: {openModal} } = useStore();
 
     const handleInvitationClick = () => {
         if (!chatStore.selectedRoom) return;
 
         navigator.clipboard.writeText(chatStore.selectedRoom.id);
         toast.success('Copied invitation code to the clipboard');
+    }
+
+    const handleChangeDisplayNameClick = () => {
+            openModal(<InputModal 
+                description='Enter your new name:'
+                buttonText='Change'
+                handleSubmit={(value) => chatStore.changeDisplayName(value)}
+            />)
     }
 
     return (
@@ -31,14 +40,14 @@ export default observer(function ChatRoomHeader() {
                         {store.chatStore.selectedRoom?.name || '{roomName}'}
                     </MenuButton>
                     <MenuList>
-                        <MenuItem icon={<EditIcon />}>
+                        <MenuItem icon={<EditIcon />} onClick={handleChangeDisplayNameClick}>
                             Change display name
                         </MenuItem>
                         <MenuItem icon={<LinkIcon />} onClick={handleInvitationClick}>
                             Copy invitation code
                         </MenuItem>
                         {chatStore.isRoomAdministrator &&
-                            <MenuItem icon={<DeleteIcon />} onClick={handleInvitationClick}>
+                            <MenuItem icon={<DeleteIcon />}>
                                 Delete room
                             </MenuItem>}
                         <MenuItem icon={<ArrowBackIcon />}>

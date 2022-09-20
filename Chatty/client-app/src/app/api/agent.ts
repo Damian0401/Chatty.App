@@ -18,11 +18,14 @@ axios.interceptors.request.use(request => {
 axios.interceptors.response.use(response => response, (error: AxiosError) => {
     const { data, status } = error.response!;
     switch (status) {
+        case 0:
+            toast.error('Network error');
+        break;
         case 400:
             showErrors(data);
             break;
-            case 401:
-                store.userStore.logout();
+        case 401:
+            store.userStore.logout();
             toast.error('Session expired - please login again');
             break;
         case 404:

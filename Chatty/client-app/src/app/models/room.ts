@@ -13,3 +13,9 @@ export interface AddToRoomResponse {
     user: User;
     message: Message;
 }
+
+export interface ChangeDisplayName {
+    roomId: string;
+    userId: string;
+    displayName: string;
+}

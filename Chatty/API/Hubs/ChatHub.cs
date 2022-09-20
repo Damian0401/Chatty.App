@@ -106,7 +106,7 @@ public class ChatHub : BaseHub
 
     public async Task RoomDetails(Guid roomId)
     {
-        var response = await _mediator.Send(new GetRoomDetails.Query{ RoomId = roomId});
+        var response = await _mediator.Send(new GetRoomDetails.Query { RoomId = roomId });
 
         if (!response.IsSuccess)
         {
@@ -116,5 +116,19 @@ public class ChatHub : BaseHub
 
         await Clients.Caller
             .SendAsync("GetRoomDetails", response.ResponseContent);
+    }
+
+    public async Task ChangeDisplayName(ChangeDisplayNameRequestDto dto)
+    {
+        var response = await _mediator.Send(new ChangeDisplayName.Command { Dto = dto });
+
+        if (!response.IsSuccess)
+        {
+            await HandleErrors(response.Errors);
+            return;
+        }
+
+        await Clients.Group(response.ResponseContent.Id.ToString())
+            .SendAsync("AddToRoom", response.ResponseContent);
     }
 }

@@ -17,11 +17,12 @@ const theme = extendTheme({
                 padding: 0,
             },
             '&::-webkit-scrollbar': {
-                width: '16px',
-                borderRadius: '8px',
+                width: '1rem',
+                borderRadius: '2rem',
                 backgroundColor: `rgba(0, 0, 0, 0.05)`,
             },
             '&::-webkit-scrollbar-thumb': {
+                borderRadius: '2rem',
                 backgroundColor: `rgba(0, 0, 0, 0.05)`,
             },
         })

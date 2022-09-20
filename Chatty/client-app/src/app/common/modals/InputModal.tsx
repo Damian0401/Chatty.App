@@ -6,12 +6,12 @@ import { useStore } from "../../stores/store";
 interface Props {
     description: string;
     buttonText: string;
-    buttonColor: string;
+    buttonColor?: string;
     inputType?: string;
     handleSubmit: (value: string) => void;
 }
 
-export default observer(function InputModal({ description, buttonText, buttonColor, inputType = 'text', handleSubmit }: Props) {
+export default observer(function InputModal({ description, buttonText, buttonColor = 'blue.600', inputType = 'text', handleSubmit }: Props) {
 
     const [value, setValue] = useState('');
 

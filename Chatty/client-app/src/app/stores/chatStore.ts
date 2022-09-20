@@ -4,7 +4,7 @@ import { history } from "../..";
 import { BASE_CHAT_URL } from "../common/utils/constants";
 import { showErrors } from "../common/utils/helpers";
 import { Message, MessageSendValues } from "../models/message";
-import { AddToRoomResponse, Room } from "../models/room";
+import { AddToRoomResponse, ChangeDisplayName, Room } from "../models/room";
 import { User } from "../models/user";
 import { store } from "./store";
 
@@ -85,6 +85,18 @@ export default class ChatStore {
     
     deleteMessage = (messageId: string) => {
         this.hubConnection?.invoke('DeleteMessage', messageId);
+    }
+    
+    changeDisplayName = (displayName: string) => {
+        if (!store.userStore.user || !this.selectedRoom) return;
+
+        const request: ChangeDisplayName = {
+            userId: store.userStore.user.id,
+            roomId: this.selectedRoom.id,
+            displayName: displayName
+        };
+
+        this.hubConnection?.invoke('ChangeDisplayName', request);
     }
 
     get isRoomAdministrator() {
