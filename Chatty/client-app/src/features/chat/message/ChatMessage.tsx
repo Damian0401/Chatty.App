@@ -38,7 +38,7 @@ export default observer(function ChatRoomMessage({ message }: Props) {
                     boxShadow='xl'
                 >
                     {!isAuthor && <Text as='b' noOfLines={1}>
-                        {selectedRoom?.users?.find(x => x.id === message.authorId)?.displayName}:
+                        {selectedRoom?.users?.find(x => x.id === message.authorId)?.displayName || '{userName}'}:
                     </Text>}
                     <Text>
                         {message.body}

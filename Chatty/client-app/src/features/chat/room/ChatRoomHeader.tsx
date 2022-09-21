@@ -30,7 +30,7 @@ export default observer(function ChatRoomHeader() {
         openModal(<ConfirmModal 
             description={`Are you sure that you want to delete ${userName} from ${chatStore.selectedRoom?.name}?`}
             buttonText='Delete'
-            handleSubmit={() => chatStore.deleteUserFromRoom(chatStore.selectedRoom!.id, userId)}
+            handleSubmit={() => chatStore.exitRoom({roomId: chatStore.selectedRoom!.id, userId: userId})}
         />)
     }
 
@@ -46,7 +46,7 @@ export default observer(function ChatRoomHeader() {
         openModal(<ConfirmModal 
             description={`Are you sure that you want to exit ${chatStore.selectedRoom?.name}?`}
             buttonText='Exit'
-            handleSubmit={() => chatStore.deleteUserFromRoom(chatStore.selectedRoom!.id, userStore.user!.id)}
+            handleSubmit={() => chatStore.exitRoom({roomId: chatStore.selectedRoom!.id, userId: userStore.user!.id})}
         />)
     }
 
@@ -95,7 +95,7 @@ export default observer(function ChatRoomHeader() {
                         <PopoverCloseButton pos='absolute' top='0' right='0' />
                         <PopoverBody mt='3'>
                             {chatStore.selectedRoom?.users?.map(user => (
-                                <Box key={user.id} _hover={{ bgColor: 'gray.100' }} borderRadius='0.5rem' p='1'>
+                                <Box key={user.id} _hover={{ bgColor: 'gray.400' }} borderRadius='0.5rem' p='1'>
                                     {user.displayName}
                                     {user.id === userStore.user?.id && ' (You) '}
                                     {user.isAdministrator && ' (admin) '}

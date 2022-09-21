@@ -37,17 +37,11 @@ namespace Application.Rooms
                 var userName = _userAccessor
                     .GetCurrentlyLoggedUserName();
 
-                var user = await _context.Users
-                    .FirstOrDefaultAsync(x => x.UserName.Equals(userName));
-
-                if (user is null || !user.Id.Equals(request.Dto.UserId))
-                    return ResponseForHub<ChangeDisplayNameResponseDto>
-                        .Failure(new List<string> { "Access denied" });
-
                 var roomApplicationUser = await _context.RoomApplicationUsers
+                    .Include(x => x.User)
                     .FirstOrDefaultAsync(x => x.RoomId.Equals(request.Dto.RoomId) && x.UserId.Equals(request.Dto.UserId));
 
-                if (roomApplicationUser is null)
+                if (roomApplicationUser is null || !roomApplicationUser.User.UserName.Equals(userName))
                     return ResponseForHub<ChangeDisplayNameResponseDto>
                         .Failure(new List<string> { "Access denied" });
 
@@ -64,7 +58,7 @@ namespace Application.Rooms
 
                 if (result == 0)
                     return ResponseForHub<ChangeDisplayNameResponseDto>
-                        .Failure(new List<string> { "Unable to join to room" });
+                        .Failure(new List<string> { "Unable to change display name" });
 
                 var responseDto = new ChangeDisplayNameResponseDto
                 {

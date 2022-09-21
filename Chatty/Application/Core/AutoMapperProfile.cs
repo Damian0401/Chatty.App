@@ -40,28 +40,21 @@ namespace Application.Core
         {
             var deletedMessageBody = "This message has been deleted";
 
-            CreateMap<Message, SendMessageResponseDto>()
-                .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
-            CreateMap<Message, MessageForCreateRoomResponseDto>()
-                .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
+            CreateMap<SendMessageRequestDto, Message>();
+            CreateMap<Message, SendMessageResponseDto>();
+            CreateMap<Message, MessageForCreateRoomResponseDto>();
+            CreateMap<Message, MessageForExitRoomResponseDto>();
+            CreateMap<Message, MessageForJoinRoomResponseDto>();
+            CreateMap<Message, MessageForChangeDisplayNameResponseDto>();
             CreateMap<Message, DeleteMessageResponseDto>()
                 .ForMember(x => x.Body, a =>
                     a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, MessageForGetRoomDetailsResponseDto>()
                 .ForMember(x => x.Body, a =>
                     a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
-            CreateMap<Message, MessageForJoinRoomResponseDto>()
-                .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
-            CreateMap<Message, MessageForChangeDisplayNameResponseDto>()
-                .ForMember(x => x.Body, a =>
-                    a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
             CreateMap<Message, MessageForConnectToChatResponseDto>()
                 .ForMember(x => x.Body, a =>
                     a.MapFrom(s => s.IsDeleted ? deletedMessageBody : s.Body));
-            CreateMap<SendMessageRequestDto, Message>();
         }
 
         private void MapsForRoom()

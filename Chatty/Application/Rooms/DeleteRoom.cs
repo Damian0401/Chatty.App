@@ -48,11 +48,9 @@ public class DeleteRoom
 
             var result = await _context.SaveChangesAsync();
 
-            if (result == 0)
-                return ResponseForHub<Unit>
-                    .Failure(new List<string> { "Unable to delete room" });
-
-            return ResponseForHub<Unit>.Success(Unit.Value);
+            return result > 0
+                ? ResponseForHub<Unit>.Success(Unit.Value)
+                : ResponseForHub<Unit>.Failure(new List<string> { "Unable to delete room" });
         }
     }
 }

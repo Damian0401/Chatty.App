@@ -5,7 +5,7 @@ import { history } from "../..";
 import { BASE_CHAT_URL } from "../common/utils/constants";
 import { showErrors } from "../common/utils/helpers";
 import { Message, MessageSendValues } from "../models/message";
-import { AddToRoomResponse, ChangeDisplayName, Room } from "../models/room";
+import { AddToRoomResponse, ChangeDisplayName, ExitRoomRequest, ExitRoomResponse, Room } from "../models/room";
 import { User } from "../models/user";
 import { store } from "./store";
 
@@ -39,6 +39,7 @@ export default class ChatStore {
         this.hubConnection.on('RecieveMessage', (message: Message) => this.addMessage(message));
         this.hubConnection.on('GetRoomDetails', (room: Room) => this.setRoom(room));
         this.hubConnection.on('HandleDeleteRoom', (roomId: string) => this.handleDeleteRoom(roomId));
+        this.hubConnection.on('HandleExitRoom', (response: ExitRoomResponse) => this.handleExitRoom(response));
     }
 
     stopHubConnection = () => {
@@ -68,7 +69,7 @@ export default class ChatStore {
     joinRoom = (roomId: string) => {
         this.hubConnection?.invoke('JoinRoom', roomId);
     }
-    
+
     createRoom = (roomName: string) => {
         this.hubConnection?.invoke('CreateRoom', roomName);
     }
@@ -83,15 +84,15 @@ export default class ChatStore {
 
         this.hubConnection.invoke('SendMessage', message);
     }
-    
+
     deleteMessage = (messageId: string) => {
         this.hubConnection?.invoke('DeleteMessage', messageId);
     }
-    
+
     deleteRoom = (roomId: string) => {
         this.hubConnection?.invoke('DeleteRoom', roomId);
     }
-    
+
     handleDeleteRoom = (roomId: string) => {
         runInAction(() => {
             this.roomRegistry.delete(roomId);
@@ -103,8 +104,28 @@ export default class ChatStore {
         })
     }
 
-    deleteUserFromRoom = (roomId: string, userId: string) => {
+    exitRoom = (request: ExitRoomRequest) => {
+        this.hubConnection?.invoke('ExitRoom', request);
+    }
 
+    handleExitRoom = (response: ExitRoomResponse) => {
+        if (store.userStore.user?.id === response.userId) {
+            this.roomRegistry.delete(response.roomId);
+        }
+
+        if (store.userStore.user?.id === response.userId && this.selectedRoom?.id === response.roomId) {
+            history.push('/chat');
+            toast.warning(`You have been removed from ${this.selectedRoom.name}`);
+            runInAction(() => this.selectedRoom = undefined);
+            return;
+        }
+
+        var room = this.roomRegistry.get(response.roomId);
+
+        if (!room || !room.users) return;
+
+        room.users = room.users.filter(u => u.id != response.userId);
+        this.addMessage(response.message);
     }
 
     changeDisplayName = (displayName: string) => {
@@ -130,7 +151,8 @@ export default class ChatStore {
 
     private addRoom = (room: Room) => {
         this.setRoom(room);
-        history.push(`/chat/${room.id}`)
+        history.push(`/chat/${room.id}`);
+        toast.success(`You successfully joined to ${room.name}`);
     }
 
     private setRoom = (room: Room) => {
@@ -154,7 +176,7 @@ export default class ChatStore {
         const room = this.getRoom(message.roomId);
         if (!room) return;
         if (!room.messages) room.messages = [];
-        
+
         message.createdAt = new Date(message.createdAt);
         let messageIndex = room.messages.findIndex(x => x.id === message.id);
 

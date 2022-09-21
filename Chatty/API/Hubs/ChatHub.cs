@@ -146,6 +146,27 @@ public class ChatHub : BaseHub
             .SendAsync("AddToRoom", response.ResponseContent);
     }
 
+    public async Task ExitRoom(ExitRoomRequestDto dto)
+    {
+        var response = await _mediator.Send(new ExitRoom.Command { Dto = dto });
+
+        if (!response.IsSuccess)
+        {
+            await HandleErrors(response.Errors);
+            return;
+        }
+
+        if (response.ResponseContent.IsRoomDeleted)
+        {
+            await Clients.Group(dto.RoomId.ToString())
+                .SendAsync("HandleDeleteRoom", dto.RoomId.ToString());
+            return;
+        }
+
+        await Clients.Group(dto.RoomId.ToString())
+            .SendAsync("HandleExitRoom", response.ResponseContent.ClientsResponse);
+    }
+
     public async Task LeaveGroup(string groupName)
     {
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);

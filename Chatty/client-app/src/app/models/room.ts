@@ -19,3 +19,14 @@ export interface ChangeDisplayName {
     userId: string;
     displayName: string;
 }
+
+export interface ExitRoomRequest {
+    roomId: string;
+    userId: string;
+}
+
+export interface ExitRoomResponse {
+    roomId: string;
+    userId: string;
+    message: Message;
+}

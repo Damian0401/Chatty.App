@@ -7,7 +7,6 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-document.title = 'Chatty App';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
