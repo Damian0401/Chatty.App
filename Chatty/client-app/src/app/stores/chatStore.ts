@@ -1,5 +1,6 @@
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { makeAutoObservable, runInAction } from "mobx";
+import { toast } from "react-toastify";
 import { history } from "../..";
 import { BASE_CHAT_URL } from "../common/utils/constants";
 import { showErrors } from "../common/utils/helpers";
@@ -37,6 +38,7 @@ export default class ChatStore {
         this.hubConnection.on('ConnectToChat', (rooms: Room[]) => rooms.forEach(room => this.setRoom(room)));
         this.hubConnection.on('RecieveMessage', (message: Message) => this.addMessage(message));
         this.hubConnection.on('GetRoomDetails', (room: Room) => this.setRoom(room));
+        this.hubConnection.on('HandleDeleteRoom', (roomId: string) => this.handleDeleteRoom(roomId));
     }
 
     stopHubConnection = () => {
@@ -53,7 +55,6 @@ export default class ChatStore {
         }
 
         this.selectedRoom = this.roomRegistry.get(id);
-
         if (!this.selectedRoom) {
             history.push('/chat/notfound');
             return;
@@ -87,6 +88,25 @@ export default class ChatStore {
         this.hubConnection?.invoke('DeleteMessage', messageId);
     }
     
+    deleteRoom = (roomId: string) => {
+        this.hubConnection?.invoke('DeleteRoom', roomId);
+    }
+    
+    handleDeleteRoom = (roomId: string) => {
+        runInAction(() => {
+            this.roomRegistry.delete(roomId);
+            this.hubConnection?.invoke('LeaveGroup', roomId);
+            if (this.selectedRoom?.id === roomId) {
+                history.push('/chat');
+                toast.warning('This room has been deleted');
+            }
+        })
+    }
+
+    deleteUserFromRoom = (roomId: string, userId: string) => {
+
+    }
+
     changeDisplayName = (displayName: string) => {
         if (!store.userStore.user || !this.selectedRoom) return;
 
@@ -97,6 +117,10 @@ export default class ChatStore {
         };
 
         this.hubConnection?.invoke('ChangeDisplayName', request);
+    }
+
+    clearSelectedRoom = () => {
+        runInAction(() => this.selectedRoom = undefined);
     }
 
     get isRoomAdministrator() {
@@ -114,10 +138,7 @@ export default class ChatStore {
             message.createdAt = new Date(message.createdAt);
         });
         runInAction(() => this.roomRegistry.set(room.id, room));
-
-        if (this.selectedRoom?.id === room.id) {
-            runInAction(() => this.selectedRoom = room);
-        }
+        this.refreshSelectedRoom(room);
     }
 
     private getRoom = (id: string) => {
@@ -143,9 +164,7 @@ export default class ChatStore {
             room.messages[messageIndex] = message;
         }
 
-        if (room.id === this.selectedRoom?.id) {
-            this.selectedRoom = room;
-        }
+        this.refreshSelectedRoom(room);
     }
 
     private addUser = (user: User, roomId: string) => {
@@ -161,8 +180,12 @@ export default class ChatStore {
             room.users[userIndex] = user;
         }
 
+        this.refreshSelectedRoom(room);
+    }
+
+    private refreshSelectedRoom = (room: Room) => {
         if (room.id === this.selectedRoom?.id) {
-            this.selectedRoom = room;
+            runInAction(() => this.selectedRoom = room);
         }
     }
 }

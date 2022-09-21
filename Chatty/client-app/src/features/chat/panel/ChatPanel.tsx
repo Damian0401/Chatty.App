@@ -1,12 +1,17 @@
 import { Button, Center, Container, Flex, Text } from "@chakra-ui/react"
 import { observer } from "mobx-react-lite"
+import { useEffect } from "react";
 import InputModal from "../../../app/common/modals/InputModal";
 import { useStore } from "../../../app/stores/store";
 
 
 export default observer(function ChatPanel() {
 
-    const { userStore: { user }, modalStore: { openModal }, chatStore: {joinRoom, createRoom} } = useStore();
+    const { userStore: { user }, modalStore: { openModal }, chatStore: {joinRoom, createRoom, clearSelectedRoom} } = useStore();
+
+    useEffect(() => {
+        clearSelectedRoom();
+    }, []);
 
     const handleJoinClick = () => {
         openModal(<InputModal 

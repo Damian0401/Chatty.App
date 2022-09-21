@@ -104,6 +104,20 @@ public class ChatHub : BaseHub
             .SendAsync("RecieveMessage", response.ResponseContent);
     }
 
+    public async Task DeleteRoom(Guid roomId)
+    {
+        var response = await _mediator.Send(new DeleteRoom.Command { RoomId = roomId });
+
+        if (!response.IsSuccess)
+        {
+            await HandleErrors(response.Errors);
+            return;
+        }
+
+        await Clients.Group(roomId.ToString())
+            .SendAsync("HandleDeleteRoom", roomId);
+    }
+
     public async Task RoomDetails(Guid roomId)
     {
         var response = await _mediator.Send(new GetRoomDetails.Query { RoomId = roomId });
@@ -130,5 +144,10 @@ public class ChatHub : BaseHub
 
         await Clients.Group(response.ResponseContent.Id.ToString())
             .SendAsync("AddToRoom", response.ResponseContent);
+    }
+
+    public async Task LeaveGroup(string groupName)
+    {
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
     }
 }
