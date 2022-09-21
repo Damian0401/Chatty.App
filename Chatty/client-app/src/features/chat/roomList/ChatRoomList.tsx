@@ -24,7 +24,11 @@ export default observer(function ChatRoomList() {
             fontFamily='sans-serif'
         >
             {roomRegistry.size > 0
-                ? Array.from(roomRegistry.values()).map(room => (
+                ? Array.from(roomRegistry.values()).sort((a, b) => {
+                    if (!a.messages || a.messages.length === 0) return 1;
+                    if (!b.messages || b.messages.length === 0) return -1;
+                    return b.messages[0].createdAt.getTime() - a.messages[0].createdAt.getTime();
+                }).map(room => (
                     <ChatRoomListItem room={room} key={room.id} />
                 )) : <Text>There are no rooms yet.</Text>}
         </VStack>

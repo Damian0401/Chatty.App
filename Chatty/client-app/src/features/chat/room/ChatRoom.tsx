@@ -40,7 +40,7 @@ export default observer(function ChatRoom() {
             >
                 <ChatRoomHeader />
                 <Flex flexDir='column' height='100%'>
-                    <Flex flexDir='column-reverse' height='100%' width='100%' overflow='auto' p='2' pb='0'>
+                    <Flex flexDir='column-reverse' height='100%' width='100%' overflow='auto' p='2' pb='1'>
                         {chatStore.selectedRoom && chatStore.selectedRoom.messages?.map((message) => (
                             <ChatMessageContainer message={message} key={message.id} />
                         ))}
