@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { history } from "../..";
@@ -12,20 +12,27 @@ import HomePage from "../../features/home/HomePage";
 import ModalContainer from "../common/modals/ModalContainer";
 import { useStore } from "../stores/store";
 import Dashboard from "./Dashboard";
+import LoadingSpinner from "./LoadingSpinner";
 import ToggleThemeButton from "./ToggleThemeButton";
 
 function App() {
 
   const { userStore, commonStore } = useStore();
 
+  const [appLoading, setAppLoading] = useState(true);
+
   useEffect(() => {
     if (!commonStore.token) {
       history.push('/');
+      setAppLoading(false);
       return;
     };
-    history.push('/chat')
-    userStore.getUser();
+    userStore.getUser().then(() => history.push('/chat'))
+    .catch(() => history.push('/'))
+    .finally(() => setAppLoading(false));
   }, []);
+
+  if (appLoading) return <LoadingSpinner />;
 
   return (
     <>
