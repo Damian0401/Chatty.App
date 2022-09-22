@@ -52,8 +52,8 @@ to run application at _http://localhost:3000/_
 
 ### Light mode
 ![light register view](https://github.com/Damian0401/Chatty.App/blob/main/Images/register-light.png)
-![light delete room view](https://github.com/Damian0401/Chatty.App/blob/main/Images/delete-light.png)
-![light chat view](https://github.com/Damian0401/Chatty.App/blob/main/Images/chat-light.png)
+![light delete room view](https://github.com/Damian0401/Chatty.App/blob/main/Images/chat-light.png)
+![light chat view](https://github.com/Damian0401/Chatty.App/blob/main/Images/delete-light.png)
 
 ### Dark mode
 ![dark chat view](https://github.com/Damian0401/Chatty.App/blob/main/Images/chat-dark.png)
