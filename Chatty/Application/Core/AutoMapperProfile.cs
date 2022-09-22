@@ -67,7 +67,9 @@ namespace Application.Core
             CreateMap<Room, GetRoomDetailsResponseDto>()
                 .ForMember(x => x.Messages, m => m.MapFrom(s => 
                     s.Messages.OrderByDescending(d => d.CreatedAt)));
-            CreateMap<Room, CallerResponseForJoinRoomResponseDto>();
+            CreateMap<Room, CallerResponseForJoinRoomResponseDto>()
+                .ForMember(x => x.Messages, m => m.MapFrom(s => 
+                    s.Messages.OrderByDescending(d => d.CreatedAt)));
         }
     }
 }

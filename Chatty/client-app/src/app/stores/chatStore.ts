@@ -149,6 +149,14 @@ export default class ChatStore {
             u.isAdministrator && u.id === store.userStore.user?.id);
     }
 
+    get sortedRooms() {
+        return Array.from(this.roomRegistry.values()).sort((a, b) => {
+            if (!a.messages || a.messages.length === 0) return 1;
+            if (!b.messages || b.messages.length === 0) return -1;
+            return b.messages[0].createdAt.getTime() - a.messages[0].createdAt.getTime();
+        });
+    }
+
     private addRoom = (room: Room) => {
         this.setRoom(room);
         history.push(`/chat/${room.id}`);

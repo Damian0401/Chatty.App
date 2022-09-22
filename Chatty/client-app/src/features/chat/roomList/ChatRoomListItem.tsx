@@ -13,11 +13,11 @@ export default observer(function ChatRoomListItem({ room }: Props) {
 
     return (
         <Box
-            bgColor='whiteAlpha.200'
+            bgColor='whiteAlpha.400'
             as={Link} to={`/chat/${room.id}`}
             borderRadius='0.2rem'
             width='100%' p='1'
-            _hover={{ bgColor: 'whiteAlpha.300' }}
+            _hover={{ bgColor: 'whiteAlpha.500' }}
         >
             <Flex>
                 <Text noOfLines={1} as='b'>

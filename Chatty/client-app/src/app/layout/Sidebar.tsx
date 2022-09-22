@@ -11,6 +11,7 @@ export default observer(function Sidebar() {
 
         <Container
             variant='main-style'
+            bgColor='gray.500'
             m='5' mt='4%' p='2' pos='fixed' left='0'
             maxWidth='15vw'
             borderRadius='1rem'

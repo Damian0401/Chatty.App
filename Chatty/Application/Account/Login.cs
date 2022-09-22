@@ -38,7 +38,7 @@ public class Login
                 .FindByEmailAsync(request.Dto.Email);
 
             if (user is null)
-                return new ResponseForController<LoginResponseDto>(HttpStatusCode.BadRequest);
+                return new ResponseForController<LoginResponseDto>(HttpStatusCode.BadRequest, new List<string> { "Invalid email or password." });
 
             var result = await _signInManager
                 .CheckPasswordSignInAsync(user, request.Dto.Password, false);

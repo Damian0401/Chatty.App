@@ -60,6 +60,8 @@ export default observer(function ChatRoomHeader() {
                         aria-label='Options'
                         borderRadius='1rem 0 1rem 0'
                         variant='main-style'
+                        bgColor='gray.500'
+                        _hover={{ bgColor: 'gray.400' }}
                     >
                         {store.chatStore.selectedRoom?.name || '{roomName}'}
                     </MenuButton>
@@ -85,6 +87,8 @@ export default observer(function ChatRoomHeader() {
                         <Button
                             leftIcon={<ChevronDownIcon />}
                             variant='main-style'
+                            bgColor='gray.500'
+                            _hover={{ bgColor: 'gray.400' }}
                             borderRadius='0 1rem 0 1rem'
                         >
                             Users ({chatStore.selectedRoom?.users?.length || '?'})

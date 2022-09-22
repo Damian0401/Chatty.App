@@ -1,6 +1,6 @@
 import { Box, Button, Center, Container, Flex, Input } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 import ChatRoomHeader from "./ChatRoomHeader";
@@ -14,6 +14,16 @@ export default observer(function ChatRoom() {
     const { id } = useParams<{ id: string }>();
 
     const [messageBody, setMessageBody] = useState('');
+    
+    const bottomRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        chatStore.selectRoom(id);
+    }, [id]);
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [chatStore.selectedRoom?.messages?.length]);
 
     const handleSendClick = () => {
         if (messageBody === '') {
@@ -25,9 +35,6 @@ export default observer(function ChatRoom() {
         setMessageBody('');
     }
 
-    useEffect(() => {
-        chatStore.selectRoom(id);
-    }, [id]);
 
     return (
         <Center>
@@ -41,6 +48,7 @@ export default observer(function ChatRoom() {
                 <ChatRoomHeader />
                 <Flex flexDir='column' height='100%'>
                     <Flex flexDir='column-reverse' height='100%' width='100%' overflow='auto' p='2' pb='1'>
+                        <div ref={bottomRef} />
                         {chatStore.selectedRoom && chatStore.selectedRoom.messages?.map((message) => (
                             <ChatMessageContainer message={message} key={message.id} />
                         ))}
