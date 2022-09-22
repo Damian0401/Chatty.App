@@ -19,6 +19,7 @@
     "axios": "^0.27.2",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.2",
+    "emoji-picker-react": "^3.6.2",
     "formik": "^2.2.9",
     "framer-motion": "^7.3.2",
     "mobx": "^6.6.2",
