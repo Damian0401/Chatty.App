@@ -50,8 +50,8 @@ to run application at _http://localhost:3000/_
 
 ## Screenshots
 
-![register view](https://github.com/Damian0401/Chatty.App/blob/master/Images/register.png)
-![join view](https://github.com/Damian0401/Chatty.App/blob/master/Images/join.png)
-![change name view](https://github.com/Damian0401/Chatty.App/blob/master/Images/change.png)
-![chat view](https://github.com/Damian0401/Chatty.App/blob/master/Images/chat.png)
-![delete room view](https://github.com/Damian0401/Chatty.App/blob/master/Images/delete.png)
+![register view](https://github.com/Damian0401/Chatty.App/blob/main/Images/register.png)
+![delete room view](https://github.com/Damian0401/Chatty.App/blob/main/Images/delete.png)
+![chat view](https://github.com/Damian0401/Chatty.App/blob/main/Images/chat.png)
+![join view](https://github.com/Damian0401/Chatty.App/blob/main/Images/join.png)
+![change name view](https://github.com/Damian0401/Chatty.App/blob/main/Images/change.png)
