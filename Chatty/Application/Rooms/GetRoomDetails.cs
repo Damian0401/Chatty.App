@@ -4,7 +4,7 @@ using Application.Interfaces;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Presistance;
+using Persistence;
 
 namespace Application.Rooms;
 

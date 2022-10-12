@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Presistance;
+using Persistence;
 
 #nullable disable
 
-namespace Presistance.Migrations
+namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20220907103605_MessageAuthorIdOptional")]

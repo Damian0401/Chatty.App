@@ -6,7 +6,7 @@ using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Presistance;
+using Persistence;
 
 namespace API.Extensions
 {

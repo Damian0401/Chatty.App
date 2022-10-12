@@ -5,7 +5,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Presistance;
+using Persistence;
 
 namespace API.Extensions
 {

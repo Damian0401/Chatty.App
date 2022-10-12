@@ -9,7 +9,7 @@ using AutoMapper;
 using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Presistance;
+using Persistence;
 
 namespace Application.Rooms
 {

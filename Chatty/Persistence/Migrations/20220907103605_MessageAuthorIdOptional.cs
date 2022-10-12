@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Presistance.Migrations
+namespace Persistence.Migrations
 {
     public partial class MessageAuthorIdOptional : Migration
     {

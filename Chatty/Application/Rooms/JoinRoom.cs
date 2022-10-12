@@ -13,7 +13,7 @@ using AutoMapper.QueryableExtensions;
 using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Presistance;
+using Persistence;
 
 namespace Application.Rooms
 {

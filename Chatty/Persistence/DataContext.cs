@@ -2,7 +2,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Presistance
+namespace Persistence
 {
     public class DataContext : IdentityDbContext<ApplicationUser>
     {
